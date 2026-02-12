@@ -91,7 +91,32 @@ export const aboutSkills = [
 ];
 
 
-export const projects = [];
+export const projects = [
+  {
+    id: 'project-1',
+    title: 'Project Alpha',
+    description: 'A brief description of Project Alpha, highlighting its purpose and key features.',
+    techStack: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Firebase'],
+    githubUrl: 'https://github.com',
+    liveDemoUrl: null,
+  },
+  {
+    id: 'project-2',
+    title: 'Project Beta',
+    description: 'A brief description of Project Beta, highlighting its purpose and key features.',
+    techStack: ['React', 'Node.js', 'Express', 'MongoDB'],
+    githubUrl: 'https://github.com',
+    liveDemoUrl: 'https://example.com',
+  },
+  {
+    id: 'project-3',
+    title: 'Project Gamma',
+    description: 'A brief description of Project Gamma, highlighting its purpose and key features.',
+    techStack: ['Python', 'Flask', 'SQLAlchemy'],
+    githubUrl: 'https://github.com',
+    liveDemoUrl: null,
+  },
+];
 
 export const certifications = [
   {
