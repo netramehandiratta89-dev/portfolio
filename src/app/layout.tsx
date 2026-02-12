@@ -6,20 +6,29 @@ import Footer from '@/components/layout/footer';
 import { ScrollProgressBar } from '@/components/layout/scroll-progress-bar';
 import { BackToTopButton } from '@/components/layout/back-to-top';
 import { Analytics } from '@vercel/analytics/react';
+import { getSettings } from '@/app/actions';
 
-export const metadata: Metadata = {
-  title: 'CodeVertex Portfolio | Netra Mehandiratta',
-  description: 'A personal portfolio for Netra Mehandiratta, a Developer, and Problem Solver.',
-  keywords: ['Developer', 'Portfolio', 'Computer Science', 'Netra Mehandiratta'],
-  authors: [{ name: 'Netra Mehandiratta' }],
-  creator: 'Netra Mehandiratta',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSettings();
+  const name = settings.name || 'Portfolio';
+  const description = settings.about_intro || `A personal portfolio for ${name}.`;
 
-export default function RootLayout({
+  return {
+    title: `${name} | ${settings.tagline || 'Developer'}`,
+    description: description,
+    keywords: ['Developer', 'Portfolio', 'Computer Science', name],
+    authors: [{ name: name }],
+    creator: name,
+  };
+}
+
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const settings = await getSettings();
   return (
     <html lang="en" className="dark">
       <head>
@@ -29,9 +38,9 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased">
         <ScrollProgressBar />
-        <Header />
+        <Header settings={settings} />
         <main>{children}</main>
-        <Footer />
+        <Footer settings={settings} />
         <BackToTopButton />
         <Toaster />
         <Analytics />

@@ -9,21 +9,23 @@ import {
   getCertifications, addCertification, updateCertification, deleteCertification,
   getSkillCategories, addSkillCategory, updateSkillCategory, deleteSkillCategory,
   getSkills, addSkill, updateSkill, deleteSkill,
-  getSupabaseConfigStatus
+  getSupabaseConfigStatus,
+  getSettings,
+  updateSettings
 } from '@/app/actions';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useToast } from '@/hooks/use-toast';
-import { Trash2, Inbox, Briefcase, Plus, Edit, Award, Cpu, TriangleAlert } from 'lucide-react';
+import { Trash2, Inbox, Briefcase, Plus, Edit, Award, Cpu, TriangleAlert, Cog } from 'lucide-react';
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import {
   Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger, DialogClose
 } from "@/components/ui/dialog";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription as FormDescriptionComponent } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -35,6 +37,7 @@ type Project = { id: string; created_at: string; title: string; description: str
 type Certification = { id: string; created_at: string; title: string; issuer: string; date: string; description: string; };
 type SkillCategory = { id: string; created_at: string; title: string; icon: string; skills: Skill[] };
 type Skill = { id: string; created_at: string; name: string; level: number; category_id: string; };
+type Settings = { [key: string]: string };
 
 // Form Schemas
 const projectFormSchema = z.object({
@@ -50,6 +53,14 @@ const skillFormSchema = z.object({
   name: z.string().min(1), level: z.preprocess((a) => parseInt(z.string().parse(a), 10), z.number().min(0).max(100)),
   category_id: z.string(),
 });
+const settingsFormSchema = z.object({
+  name: z.string().min(2, "Name is required."),
+  tagline: z.string().min(2, "Tagline is required."),
+  about_intro: z.string().min(10, "About intro must be at least 10 characters."),
+  contact_email: z.string().email("Please enter a valid email."),
+  contact_phone: z.string().min(2, "Phone number is required."),
+  resume_url: z.string().url("Please enter a valid URL.").or(z.literal('')),
+});
 
 export default function AdminPage() {
   const { toast } = useToast();
@@ -60,6 +71,7 @@ export default function AdminPage() {
   const [certifications, setCertifications] = useState<Certification[]>([]);
   const [skillCategories, setSkillCategories] = useState<SkillCategory[]>([]);
   const [skills, setSkills] = useState<Skill[]>([]);
+  const [settings, setSettings] = useState<Settings>({});
 
   // Dialog states
   const [isProjectDialogOpen, setIsProjectDialogOpen] = useState(false);
@@ -78,13 +90,21 @@ export default function AdminPage() {
   const certForm = useForm<z.infer<typeof certificationFormSchema>>({ resolver: zodResolver(certificationFormSchema), defaultValues: { title: '', issuer: '', date: '', description: '' } });
   const skillCatForm = useForm<z.infer<typeof skillCategoryFormSchema>>({ resolver: zodResolver(skillCategoryFormSchema), defaultValues: { title: '', icon: '' } });
   const skillForm = useForm<z.infer<typeof skillFormSchema>>({ resolver: zodResolver(skillFormSchema), defaultValues: { name: '', level: 80, category_id: '' } });
-
+  const settingsForm = useForm<z.infer<typeof settingsFormSchema>>({
+    resolver: zodResolver(settingsFormSchema),
+    defaultValues: { name: '', tagline: '', about_intro: '', contact_email: '', contact_phone: '', resume_url: '' },
+  });
+  
   const fetchData = () => {
     getMessages().then(setMessages);
     getProjects().then(setProjects);
     getCertifications().then(setCertifications);
     getSkillCategories().then(setSkillCategories);
     getSkills().then(setSkills);
+    getSettings().then(s => {
+      setSettings(s);
+      settingsForm.reset(s);
+    });
   };
 
   useEffect(() => {
@@ -107,6 +127,18 @@ export default function AdminPage() {
     }
   };
   
+  // --- Site Settings ---
+  const onSettingsSubmit = async (values: z.infer<typeof settingsFormSchema>) => {
+    const settingsToUpdate = Object.entries(values).map(([key, value]) => ({ key, value: value || '' }));
+    const result = await updateSettings(settingsToUpdate);
+    if (result.success) {
+      toast({ title: 'Settings updated.' });
+      fetchData();
+    } else {
+      toast({ variant: 'destructive', title: 'Something went wrong.', description: result.error });
+    }
+  };
+
   // --- Projects ---
   const handleOpenProjectDialog = (project: Project | null) => {
     setEditingProject(project);
@@ -218,6 +250,36 @@ export default function AdminPage() {
           <h1 className="font-headline text-3xl font-bold">Admin Panel</h1>
           <p className="text-foreground/80">Manage your portfolio content.</p>
         </header>
+
+        {/* Site Settings Card */}
+        <Card className="glass-card">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 font-headline text-2xl"><Cog/> Site Settings</CardTitle>
+            <CardDescription>Manage general site content like your name, bio, and contact info.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Form {...settingsForm}>
+              <form onSubmit={settingsForm.handleSubmit(onSettingsSubmit)} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <FormField control={settingsForm.control} name="name" render={({ field }) => (<FormItem><FormLabel>Name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>)} />
+                  <FormField control={settingsForm.control} name="tagline" render={({ field }) => (<FormItem><FormLabel>Tagline</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>)} />
+                </div>
+                <FormField control={settingsForm.control} name="about_intro" render={({ field }) => (<FormItem><FormLabel>About Intro</FormLabel><FormControl><Textarea {...field} rows={5} /></FormControl><FormMessage /></FormItem>)} />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <FormField control={settingsForm.control} name="contact_email" render={({ field }) => (<FormItem><FormLabel>Contact Email</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>)} />
+                  <FormField control={settingsForm.control} name="contact_phone" render={({ field }) => (<FormItem><FormLabel>Contact Phone</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>)} />
+                </div>
+                <FormField control={settingsForm.control} name="resume_url" render={({ field }) => (<FormItem><FormLabel>Resume URL</FormLabel><FormControl><Input placeholder="https://example.com/resume.pdf" {...field} /></FormControl><FormDescriptionComponent>Host your PDF file at a public URL and paste it here.</FormDescriptionComponent><FormMessage /></FormItem>)} />
+                <div className="flex justify-end">
+                  <Button type="submit" disabled={settingsForm.formState.isSubmitting}>
+                    {settingsForm.formState.isSubmitting ? 'Saving...' : 'Save Settings'}
+                  </Button>
+                </div>
+              </form>
+            </Form>
+          </CardContent>
+        </Card>
+
 
         {/* Projects Card */}
         <Card className="glass-card">

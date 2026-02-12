@@ -4,8 +4,10 @@ import SkillsSection from '@/components/sections/skills';
 import ProjectsSection from '@/components/sections/projects';
 import CertificationsSection from '@/components/sections/certifications';
 import ContactSection from '@/components/sections/contact';
+import { getSettings } from './actions';
 
-export default function Home() {
+export default async function Home() {
+  const settings = await getSettings();
   return (
     <div className="flex flex-col">
       <HeroSection />
@@ -13,7 +15,7 @@ export default function Home() {
       <SkillsSection />
       <ProjectsSection />
       <CertificationsSection />
-      <ContactSection />
+      <ContactSection settings={settings} />
     </div>
   );
 }

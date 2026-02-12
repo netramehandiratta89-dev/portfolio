@@ -254,3 +254,37 @@ export async function deleteSkill(id: string) {
   revalidatePath('/'); revalidatePath('/admin');
   return { success: true };
 }
+
+// Settings Actions
+export async function getSettings() {
+  if (!supabase) return {};
+  const { data, error } = await supabase.from('settings').select('*');
+
+  if (error) {
+    console.error('Error fetching settings:', error);
+    if (error.code === '42P01') return {}; // table doesn't exist
+    return {};
+  }
+  
+  // Convert array to key-value object
+  const settings = data.reduce((acc, setting) => {
+    acc[setting.key] = setting.value;
+    return acc;
+  }, {} as { [key: string]: string });
+
+  return settings;
+}
+
+export async function updateSettings(settings: { key: string; value: string }[]) {
+  if (!supabase) return { success: false, error: 'Supabase is not configured.' };
+  
+  const { error } = await supabase.from('settings').upsert(settings);
+
+  if (error) {
+    return { success: false, error: error.message };
+  }
+
+  revalidatePath('/');
+  revalidatePath('/admin');
+  return { success: true };
+}

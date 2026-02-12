@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu, Code } from 'lucide-react';
-import { socialLinks, personalInfo } from '@/lib/data';
+import { socialLinks } from '@/lib/data';
 import { cn } from '@/lib/utils';
 
 const navLinks = [
@@ -15,7 +15,7 @@ const navLinks = [
   { href: '#contact', label: 'Contact' },
 ];
 
-export default function Header() {
+export default function Header({ settings }: { settings: { [key: string]: string } }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -30,6 +30,8 @@ export default function Header() {
   const handleLinkClick = () => {
     setIsOpen(false);
   };
+
+  const name = settings.name || 'Portfolio';
 
   const NavMenu = ({ isMobile }: { isMobile?: boolean }) => (
     <nav
@@ -70,7 +72,7 @@ export default function Header() {
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2 font-headline text-2xl font-bold">
           <Code className="h-7 w-7 text-primary" />
-          <span>{personalInfo.name.split(' ')[0]}</span>
+          <span>{name.split(' ')[0]}</span>
         </Link>
 
         <NavMenu />

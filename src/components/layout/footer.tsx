@@ -3,8 +3,9 @@ import { socialLinks } from '@/lib/data';
 import { Button } from '@/components/ui/button';
 import { Code } from 'lucide-react';
 
-export default function Footer() {
+export default function Footer({ settings }: { settings: { [key: string]: string } }) {
   const currentYear = new Date().getFullYear();
+  const name = settings.name || 'User';
 
   return (
     <footer className="border-t border-white/10">
@@ -14,7 +15,7 @@ export default function Footer() {
           <p className="font-headline text-lg font-bold">CodeVertex</p>
         </div>
         <div className="text-center text-sm text-foreground/60">
-          &copy; {currentYear} Netra Mehandiratta. All rights reserved.
+          &copy; {currentYear} {name}. All rights reserved.
         </div>
         <div className="flex items-center gap-2">
           {socialLinks.map((link) => (

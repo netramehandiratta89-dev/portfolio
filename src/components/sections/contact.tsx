@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Mail, Smartphone, Send } from 'lucide-react';
-import { contactInfo, socialLinks } from '@/lib/data';
+import { socialLinks } from '@/lib/data';
 import { useToast } from '@/hooks/use-toast';
 import { addMessage } from '@/app/actions';
 
@@ -19,12 +19,15 @@ const formSchema = z.object({
   message: z.string().min(10, { message: 'Message must be at least 10 characters.' }),
 });
 
-export default function ContactSection() {
+export default function ContactSection({ settings }: { settings: { [key: string]: string } }) {
   const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: { name: '', email: '', message: '' },
   });
+
+  const email = settings.contact_email || '';
+  const phone = settings.contact_phone || '';
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const result = await addMessage(values);
@@ -61,14 +64,18 @@ export default function ContactSection() {
                 <CardTitle className="font-headline text-2xl">Contact Details</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <a href={`mailto:${contactInfo.email}`} className="flex items-center gap-4 text-lg hover:text-primary transition-colors">
-                  <Mail className="h-6 w-6 text-primary" />
-                  <span>{contactInfo.email}</span>
-                </a>
-                <a href={`tel:${contactInfo.phone}`} className="flex items-center gap-4 text-lg hover:text-primary transition-colors">
-                  <Smartphone className="h-6 w-6 text-primary" />
-                  <span>{contactInfo.phone}</span>
-                </a>
+                {email && (
+                  <a href={`mailto:${email}`} className="flex items-center gap-4 text-lg hover:text-primary transition-colors">
+                    <Mail className="h-6 w-6 text-primary" />
+                    <span>{email}</span>
+                  </a>
+                )}
+                {phone && (
+                  <a href={`tel:${phone}`} className="flex items-center gap-4 text-lg hover:text-primary transition-colors">
+                    <Smartphone className="h-6 w-6 text-primary" />
+                    <span>{phone}</span>
+                  </a>
+                )}
               </CardContent>
             </Card>
             
