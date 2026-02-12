@@ -1,104 +1,131 @@
 'use client';
 
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { useRouter } from 'next/navigation';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
-import { useAuth } from '@/context/auth-context';
-
+import { useEffect, useState } from 'react';
+import { getMessages, deleteMessage } from '@/app/actions';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { useToast } from '@/hooks/use-toast';
-import { LogIn } from 'lucide-react';
+import { Trash2, Inbox } from 'lucide-react';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
-const formSchema = z.object({
-  email: z.string().email({ message: 'Please enter a valid email.' }),
-  password: z.string().min(6, { message: 'Password must be at least 6 characters.' }),
-});
+type Message = {
+  id: number;
+  created_at: string;
+  name: string;
+  email: string;
+  message: string;
+};
 
-export default function AdminLogin() {
-  const router = useRouter();
-  const { user } = useAuth();
+export default function AdminPage() {
   const { toast } = useToast();
-  const [loading, setLoading] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([]);
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: { email: '', password: '' },
-  });
+  useEffect(() => {
+    getMessages().then(setMessages);
+  }, []);
 
-  if (user) {
-    router.replace('/admin/dashboard');
-    return null;
-  }
-
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    setLoading(true);
-    try {
-      await signInWithEmailAndPassword(auth, values.email, values.password);
-      toast({ title: 'Login successful!', description: 'Redirecting to dashboard...' });
-      router.push('/admin/dashboard');
-    } catch (error) {
-      toast({
-        variant: 'destructive',
-        title: 'Login Failed',
-        description: 'Invalid email or password. Please try again.',
-      });
-      console.error(error);
-    } finally {
-      setLoading(false);
+  const handleDelete = async (id: number) => {
+    const result = await deleteMessage(id);
+    if (result.success) {
+      setMessages(messages.filter(msg => msg.id !== id));
+      toast({ title: 'Message deleted.' });
+    } else {
+      toast({ variant: 'destructive', title: 'Failed to delete message.', description: result.error });
     }
-  }
+  };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-muted/40 p-4">
-      <Card className="w-full max-w-sm glass-card">
-        <CardHeader className="text-center">
-          <CardTitle className="font-headline text-2xl">Admin Panel</CardTitle>
-          <CardDescription>Enter your credentials to access the dashboard.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input type="email" placeholder="admin@example.com" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input type="password" placeholder="••••••••" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit" className="w-full" disabled={loading}>
-                {loading ? 'Logging in...' : 'Log In'}
-                <LogIn className="ml-2 h-4 w-4" />
-              </Button>
-            </form>
-          </Form>
-        </CardContent>
-      </Card>
+    <div className="min-h-screen bg-muted/40 p-4 md:p-8">
+      <div className="max-w-7xl mx-auto">
+        <header className="flex items-center justify-between mb-8">
+          <div>
+            <h1 className="font-headline text-3xl font-bold">Admin Panel</h1>
+            <p className="text-foreground/80">Manage your portfolio content.</p>
+          </div>
+        </header>
+
+        <Card className="glass-card">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 font-headline text-2xl">
+                <Inbox/> Contact Messages
+            </CardTitle>
+            <CardDescription>
+              Here are the messages submitted through your contact form.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ScrollArea className="h-[60vh]">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Received</TableHead>
+                    <TableHead>From</TableHead>
+                    <TableHead>Message</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {messages.length > 0 ? messages.map((msg) => (
+                    <TableRow key={msg.id}>
+                      <TableCell className="w-[180px]">
+                        {new Date(msg.created_at).toLocaleString()}
+                      </TableCell>
+                      <TableCell>
+                        <div className="font-medium">{msg.name}</div>
+                        <div className="text-sm text-foreground/70">{msg.email}</div>
+                      </TableCell>
+                      <TableCell>
+                        <p className="max-w-md truncate">{msg.message}</p>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button variant="ghost" size="icon">
+                              <Trash2 className="h-4 w-4 text-destructive" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                This action cannot be undone. This will permanently delete the message.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction onClick={() => handleDelete(msg.id)} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                                Delete
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </TableCell>
+                    </TableRow>
+                  )) : (
+                    <TableRow>
+                      <TableCell colSpan={4} className="h-24 text-center">
+                        No messages yet.
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </ScrollArea>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

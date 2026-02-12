@@ -38,6 +38,6 @@ export async function deleteMessage(id: number) {
     return { success: false, error: error.message };
   }
 
-  revalidatePath('/admin/dashboard');
+  revalidatePath('/admin');
   return { success: true };
 }
