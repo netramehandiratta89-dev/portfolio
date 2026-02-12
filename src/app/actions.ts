@@ -16,6 +16,18 @@ export async function getMessages() {
   return data;
 }
 
+export async function addMessage(formData: { name: string; email: string; message: string; }) {
+  const { error } = await supabase
+    .from('messages')
+    .insert([formData]);
+
+  if (error) {
+    return { success: false, error: error.message };
+  }
+  
+  return { success: true };
+}
+
 export async function deleteMessage(id: number) {
   const { error } = await supabase
     .from('messages')
