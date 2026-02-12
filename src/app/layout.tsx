@@ -9,11 +9,11 @@ import CustomCursor from '@/components/layout/custom-cursor';
 import { Analytics } from '@vercel/analytics/react';
 
 export const metadata: Metadata = {
-  title: 'CodeVertex Portfolio | John Doe',
-  description: 'A personal portfolio for John Doe, a Cybersecurity Enthusiast, Developer, and Problem Solver.',
-  keywords: ['Cybersecurity', 'Developer', 'Portfolio', 'Computer Science', 'John Doe'],
-  authors: [{ name: 'John Doe' }],
-  creator: 'John Doe',
+  title: 'CodeVertex Portfolio | netra Mehandiratta',
+  description: 'A personal portfolio for netra Mehandiratta, a Cybersecurity Enthusiast, Developer, and Problem Solver.',
+  keywords: ['Cybersecurity', 'Developer', 'Portfolio', 'Computer Science', 'netra Mehandiratta'],
+  authors: [{ name: 'netra Mehandiratta' }],
+  creator: 'netra Mehandiratta',
 };
 
 export default function RootLayout({

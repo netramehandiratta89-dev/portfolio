@@ -14,7 +14,7 @@ export default function Footer() {
           <p className="font-headline text-lg font-bold">CodeVertex</p>
         </div>
         <div className="text-center text-sm text-foreground/60">
-          &copy; {currentYear} John Doe. All rights reserved.
+          &copy; {currentYear} netra Mehandiratta. All rights reserved.
         </div>
         <div className="flex items-center gap-2">
           {socialLinks.map((link) => (
