@@ -62,30 +62,6 @@
     @apply bg-background text-foreground;
     scroll-behavior: smooth;
   }
-  
-  .custom-cursor .cursor__dot {
-    width: 6px;
-    height: 6px;
-    background-color: hsl(var(--primary));
-  }
-
-  .custom-cursor .cursor__outline {
-    width: 30px;
-    height: 30px;
-    border: 2px solid hsla(var(--primary), 0.5);
-  }
-
-  .custom-cursor .cursor__dot,
-  .custom-cursor .cursor__outline {
-    position: fixed;
-    top: 0;
-    left: 0;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-    z-index: 9999;
-    pointer-events: none;
-    transition: all 0.1s ease-out;
-  }
 }
 
 @layer components {
