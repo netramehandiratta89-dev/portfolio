@@ -27,8 +27,8 @@ export const socialLinks = [
 ];
 
 export const contactInfo = {
-  email: "contact@netramehandiratta.com",
-  phone: "+1 123 456 7890",
+  email: "netramehandiratta89@gmail.com",
+  phone: "9540974674",
 };
 
 export const about = {

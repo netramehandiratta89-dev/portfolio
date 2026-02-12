@@ -9,8 +9,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Send } from 'lucide-react';
+import { Send, Mail, Smartphone } from 'lucide-react';
 import { submitContactForm } from '@/app/actions';
+import { contactInfo, socialLinks } from '@/lib/data';
 
 const formSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
@@ -58,11 +59,11 @@ export default function ContactSection() {
             Get in Touch
           </h2>
           <p className="max-w-[900px] text-foreground/80 md:text-xl/relaxed">
-            Have a question or want to work together? Drop me a message.
+            Have a question or want to work together? Drop me a message or reach out directly.
           </p>
         </div>
-        <div className="mt-12 max-w-xl mx-auto">
-          <Card className="glass-card">
+        <div className="mt-12 max-w-5xl mx-auto grid lg:grid-cols-2 gap-12 items-start">
+          <Card className="glass-card h-full">
             <CardHeader>
               <CardTitle className="font-headline text-2xl">Send a Message</CardTitle>
             </CardHeader>
@@ -116,6 +117,40 @@ export default function ContactSection() {
               </Form>
             </CardContent>
           </Card>
+
+          <div className="space-y-8">
+            <Card className="glass-card">
+              <CardHeader>
+                <CardTitle className="font-headline text-2xl">Contact Details</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <a href={`mailto:${contactInfo.email}`} className="flex items-center gap-4 text-lg hover:text-primary transition-colors">
+                  <Mail className="h-6 w-6 text-primary" />
+                  <span>{contactInfo.email}</span>
+                </a>
+                <a href={`tel:${contactInfo.phone}`} className="flex items-center gap-4 text-lg hover:text-primary transition-colors">
+                  <Smartphone className="h-6 w-6 text-primary" />
+                  <span>{contactInfo.phone}</span>
+                </a>
+              </CardContent>
+            </Card>
+            
+            <Card className="glass-card">
+              <CardHeader>
+                <CardTitle className="font-headline text-2xl">Find me on</CardTitle>
+              </CardHeader>
+              <CardContent className="flex flex-wrap gap-4">
+                {socialLinks.map((link) => (
+                    <Button key={link.name} variant="outline" size="lg" asChild>
+                      <a href={link.url} target="_blank" rel="noopener noreferrer">
+                        <link.icon className="mr-2 h-5 w-5" />
+                        {link.name}
+                      </a>
+                    </Button>
+                ))}
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
     </section>
