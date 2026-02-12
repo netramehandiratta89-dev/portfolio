@@ -38,19 +38,21 @@ export default function HeroSection() {
         <div className="mt-2 h-8 text-lg text-primary md:text-xl">
           <AnimatedTyping strings={skills} />
         </div>
-        <div className="mt-8 flex flex-col gap-4 sm:flex-row">
+        <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
           <Button asChild variant="outline" size="lg" className="border-primary/50 text-primary hover:bg-primary/10 hover:text-primary">
             <a href="#contact">
               <Send className="mr-2 h-5 w-5" />
               Contact Me
             </a>
           </Button>
-          <Button asChild variant="secondary" size="lg">
-            <a href={personalInfo.resumeUrl} download>
-              <Download className="mr-2 h-5 w-5" />
-              Download Resume
-            </a>
-          </Button>
+          {personalInfo.resumeUrl && (
+            <Button asChild variant="secondary" size="lg">
+              <a href={personalInfo.resumeUrl} download>
+                <Download className="mr-2 h-5 w-5" />
+                Download Resume
+              </a>
+            </Button>
+          )}
         </div>
       </div>
     </section>
