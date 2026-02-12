@@ -6,7 +6,6 @@ import {
   Smartphone,
   Server,
   Database,
-  ShieldCheck,
   Globe,
   GitBranch,
   Settings,
@@ -17,7 +16,7 @@ import {
 
 export const personalInfo = {
   name: "Netra Mehandiratta",
-  tagline: "Cybersecurity Enthusiast | Developer | Problem Solver",
+  tagline: "Developer | Problem Solver",
   resumeUrl: "/resume.pdf",
 };
 
@@ -32,7 +31,7 @@ export const contactInfo = {
 };
 
 export const about = {
-  intro: "I am a passionate Computer Science student with a strong interest in cybersecurity and software development. I thrive on solving complex problems and continuously learning new technologies. My goal is to leverage my skills to build secure and innovative solutions.",
+  intro: "I am a passionate Computer Science student with a strong interest in software development. I thrive on solving complex problems and continuously learning new technologies. My goal is to leverage my skills to build innovative solutions.",
   education: [
     {
       degree: "Bachelors in Computer Applications",
@@ -80,16 +79,6 @@ export const skillCategories = [
       { name: "VS Code", level: 95 },
     ],
   },
-  {
-    title: "Cybersecurity",
-    icon: ShieldCheck,
-    skills: [
-      { name: "Networking Basics", level: 70 },
-      { name: "Security Awareness", level: 80 },
-      { name: "Ethical Hacking Concepts", level: 60 },
-      { name: "Cryptography Basics", level: 65 },
-    ],
-  },
 ];
 
 export const aboutSkills = [
@@ -99,7 +88,6 @@ export const aboutSkills = [
   { name: "Firebase", icon: Server },
   { name: "Supabase", icon: Database },
   { name: "GitHub", icon: Github },
-  { name: "Cybersecurity", icon: ShieldCheck },
 ];
 
 

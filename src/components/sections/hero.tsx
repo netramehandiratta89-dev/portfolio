@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export default function HeroSection() {
-  const skills = ["Cybersecurity", "Web Development", "Problem Solving", "C++", "Python"];
+  const skills = ["Web Development", "Problem Solving", "C++", "Python"];
   const profileImage = PlaceHolderImages.find(p => p.id === 'profile');
 
   return (
