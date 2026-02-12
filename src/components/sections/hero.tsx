@@ -12,7 +12,7 @@ export default async function HeroSection() {
   const profileImage = PlaceHolderImages.find(p => p.id === 'profile');
 
   return (
-    <section id="home" className="relative flex h-[calc(100vh-80px)] min-h-[700px] w-full items-center justify-center overflow-hidden pt-20">
+    <section id="home" className="relative flex h-[calc(100vh-80px)] min-h-[700px] w-full items-center justify-center pt-20">
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-background" />
         <div className="absolute inset-0 bg-grid-primary/5 [mask-image:linear-gradient(to_bottom,white_5%,transparent_90%)]"></div>

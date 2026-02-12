@@ -164,18 +164,35 @@ export async function deleteCertification(id: string) {
 // Skill Categories Actions
 export async function getSkillCategories() {
   if (!supabase) return [];
-  const { data, error } = await supabase
+  
+  const { data: categories, error: catError } = await supabase
     .from('skill_categories')
-    .select('*, skills(*)')
+    .select('*')
     .order('created_at', { ascending: true });
 
-  if (error) {
-    console.error('Error fetching skill categories:', error);
-    if (error.code === '42P01') return [];
+  if (catError) {
+    console.error('Error fetching skill categories:', catError);
+    if (catError.code === '42P01') return [];
     return [];
   }
-  return data;
+  
+  const { data: skills, error: skillsError } = await supabase
+    .from('skills')
+    .select('*');
+
+  if (skillsError) {
+    console.error('Error fetching skills for categories:', skillsError);
+    return categories.map(c => ({...c, skills: []}));
+  }
+
+  const categoriesWithSkills = categories.map(category => ({
+    ...category,
+    skills: skills.filter(skill => skill.category_id === category.id).sort((a,b) => b.level - a.level)
+  }));
+
+  return categoriesWithSkills;
 }
+
 
 export async function addSkillCategory(category: any) {
   if (!supabase) return { success: false, error: 'Supabase is not configured.' };

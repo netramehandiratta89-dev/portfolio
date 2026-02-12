@@ -21,22 +21,21 @@ export default async function ProjectsSection() {
         </div>
         <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {projects.map((project) => (
-              <Card key={project.id} className="glass-card flex flex-col overflow-hidden transition-all duration-300 hover:border-primary/50 hover:shadow-primary/20 hover:shadow-2xl hover:-translate-y-2">
+              <Card key={project.id} className="glass-card group flex flex-col overflow-hidden transition-all duration-300 hover:border-primary/50 hover:shadow-primary/20 hover:shadow-2xl hover:-translate-y-2">
                 {project.imageUrl && (
-                  <div className="aspect-video overflow-hidden">
+                  <div className="relative aspect-video overflow-hidden">
                     <Image
                       src={project.imageUrl}
                       alt={project.title}
-                      width={600}
-                      height={400}
-                      className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
+                      fill
+                      className="object-contain transition-transform duration-300 group-hover:scale-105"
                       data-ai-hint={project.imageHint || ''}
                     />
                   </div>
                 )}
                 <CardHeader>
                   <CardTitle className="font-headline text-xl">{project.title}</CardTitle>
-                  <CardDescription className="text-foreground/70">{project.description}</CardDescription>
+                  <CardDescription className="text-foreground/70 pt-2">{project.description}</CardDescription>
                 </CardHeader>
                 <CardContent className="flex-grow">
                   <div className="flex flex-wrap gap-2">
