@@ -3,10 +3,11 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription }
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Github, ExternalLink } from 'lucide-react';
-import { projects } from '@/lib/data';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { getProjects } from '@/app/actions';
 
-export default function ProjectsSection() {
+export default async function ProjectsSection() {
+  const projects = await getProjects();
+
   return (
     <section id="projects" className="w-full bg-muted/20 py-20 md:py-32">
       <div className="container mx-auto px-4 md:px-6">
@@ -19,19 +20,17 @@ export default function ProjectsSection() {
           </p>
         </div>
         <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {projects.map((project) => {
-            const placeholder = PlaceHolderImages.find(p => p.id === project.id);
-            return (
-              <Card key={project.title} className="glass-card flex flex-col overflow-hidden transition-all duration-300 hover:border-primary/50 hover:shadow-primary/20 hover:shadow-2xl hover:-translate-y-2">
-                {placeholder && (
+          {projects.map((project) => (
+              <Card key={project.id} className="glass-card flex flex-col overflow-hidden transition-all duration-300 hover:border-primary/50 hover:shadow-primary/20 hover:shadow-2xl hover:-translate-y-2">
+                {project.imageUrl && (
                   <div className="aspect-video overflow-hidden">
                     <Image
-                      src={placeholder.imageUrl}
+                      src={project.imageUrl}
                       alt={project.title}
                       width={600}
                       height={400}
                       className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
-                      data-ai-hint={placeholder.imageHint}
+                      data-ai-hint={project.imageHint || ''}
                     />
                   </div>
                 )}
@@ -41,7 +40,7 @@ export default function ProjectsSection() {
                 </CardHeader>
                 <CardContent className="flex-grow">
                   <div className="flex flex-wrap gap-2">
-                    {project.techStack.map((tech) => (
+                    {project.techStack.map((tech: string) => (
                       <Badge key={tech} variant="secondary">{tech}</Badge>
                     ))}
                   </div>
@@ -63,8 +62,7 @@ export default function ProjectsSection() {
                   )}
                 </CardFooter>
               </Card>
-            );
-          })}
+            ))}
         </div>
       </div>
     </section>

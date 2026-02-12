@@ -145,7 +145,7 @@ export const certifications = [
     issuer: "Smart India Hackathon",
     date: "2025",
     icon: Award,
-    description: "Contributed to event organization and coordination, supporting participants and maintaining workflow during the hackathon.",
+    description: "Contributed to event organization and coordination, a supporting participants and maintaining workflow during the hackathon.",
   },
   {
     title: "💻 Participant — Smart India Hackathon",
