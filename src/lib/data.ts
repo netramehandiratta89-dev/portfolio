@@ -107,15 +107,51 @@ export const projects = [];
 
 export const certifications = [
   {
-    title: "Cybersecurity Fundamentals",
-    issuer: "Tech Academy",
-    date: "June 2023",
+    title: "🏆 Builder’s Build Hackathon — 1st Place",
+    issuer: "BVIMR × 23 Ventures",
+    date: "2026",
     icon: Award,
   },
   {
-    title: "Advanced Python Programming",
-    issuer: "Code Institute",
-    date: "January 2023",
+    title: "🧑‍💼 Build-A-Thon Coordinator",
+    issuer: "BVIMR",
+    date: "2025",
+    icon: Award,
+  },
+  {
+    title: "🥉 3rd Place — SIH Internal Hackathon",
+    issuer: "Smart India Hackathon",
+    date: "2025",
+    icon: Award,
+  },
+  {
+    title: "🤝 Volunteer — SIH Internal Hackathon",
+    issuer: "Smart India Hackathon",
+    date: "2025",
+    icon: Award,
+  },
+  {
+    title: "💻 Participant — Smart India Hackathon",
+    issuer: "Smart India Hackathon",
+    date: "2025",
+    icon: Award,
+  },
+  {
+    title: "🌍 Top 50 Changemakers of India",
+    issuer: "Community Initiative",
+    date: "2025",
+    icon: Award,
+  },
+  {
+    title: "🧠 AI Solutions Challenge — Inter-School Festival",
+    issuer: "Inter-School Festival",
+    date: "2024",
+    icon: Award,
+  },
+  {
+    title: "Duke of Edinburgh’s International Award — Bronze",
+    issuer: "The Duke of Edinburgh's Award",
+    date: "2025",
     icon: Award,
   },
 ];
