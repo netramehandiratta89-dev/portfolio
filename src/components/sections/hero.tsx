@@ -22,10 +22,10 @@ export default function HeroSection() {
           <Image
             src={profileImage.imageUrl}
             alt="Netra Mehandiratta"
-            width={160}
-            height={160}
+            width={180}
+            height={220}
             priority
-            className="mb-6 rounded-full border-4 border-primary/30 object-cover shadow-lg"
+            className="mb-6 rounded-lg object-cover shadow-lg"
             data-ai-hint={profileImage.imageHint}
           />
         )}
