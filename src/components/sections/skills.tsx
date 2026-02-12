@@ -3,17 +3,39 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { skillCategories } from '@/lib/data';
+import { getSkillCategories } from '@/app/actions';
 import { cn } from '@/lib/utils';
+import { Code, Globe, Server, Cpu, GitBranch, Settings, BookOpen, Award } from 'lucide-react';
+
+const iconMap: { [key: string]: React.ComponentType<any> } = {
+  Code, Globe, Server, Cpu, GitBranch, Settings, BookOpen, Award,
+};
+
+type Skill = {
+  name: string;
+  level: number;
+};
+
+type SkillCategory = {
+  id: string;
+  title: string;
+  icon: string;
+  skills: Skill[];
+};
 
 export default function SkillsSection() {
   const [progress, setProgress] = useState(0);
+  const [skillCategories, setSkillCategories] = useState<SkillCategory[]>([]);
 
   useEffect(() => {
-    // Animate progress bars on component mount
     const timer = setTimeout(() => setProgress(100), 500);
+    getSkillCategories().then(data => setSkillCategories(data || []));
     return () => clearTimeout(timer);
   }, []);
+
+  if (skillCategories.length === 0) {
+    return null;
+  }
 
   return (
     <section id="skills" className="w-full bg-background py-20 md:py-32">
@@ -27,39 +49,42 @@ export default function SkillsSection() {
             </p>
         </div>
         <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2">
-          {skillCategories.map((category, index) => (
-            <div
-              key={category.title}
-              className={cn({
-                'md:col-span-2 flex justify-center':
-                  skillCategories.length % 2 !== 0 && index === skillCategories.length - 1,
-              })}
-            >
-              <Card
-                className={cn('glass-card w-full', {
-                  'md:w-1/2':
-                    skillCategories.length % 2 !== 0 &&
-                    index === skillCategories.length - 1,
+          {skillCategories.map((category, index) => {
+            const IconComponent = iconMap[category.icon] || Code;
+            return (
+              <div
+                key={category.id}
+                className={cn({
+                  'md:col-span-2 flex justify-center':
+                    skillCategories.length % 2 !== 0 && index === skillCategories.length - 1,
                 })}
               >
-                <CardHeader className="flex flex-row items-center gap-4">
-                  <category.icon className="h-8 w-8 text-primary" />
-                  <CardTitle className="font-headline text-2xl">{category.title}</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  {category.skills.map((skill) => (
-                    <div key={skill.name} className="space-y-2">
-                      <div className="flex justify-between">
-                        <p className="font-medium">{skill.name}</p>
-                        <p className="text-sm text-foreground/80">{skill.level}%</p>
+                <Card
+                  className={cn('glass-card w-full', {
+                    'md:w-1/2':
+                      skillCategories.length % 2 !== 0 &&
+                      index === skillCategories.length - 1,
+                  })}
+                >
+                  <CardHeader className="flex flex-row items-center gap-4">
+                    <IconComponent className="h-8 w-8 text-primary" />
+                    <CardTitle className="font-headline text-2xl">{category.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    {category.skills.map((skill) => (
+                      <div key={skill.name} className="space-y-2">
+                        <div className="flex justify-between">
+                          <p className="font-medium">{skill.name}</p>
+                          <p className="text-sm text-foreground/80">{skill.level}%</p>
+                        </div>
+                        <Progress value={(skill.level * progress) / 100} className="h-2" />
                       </div>
-                      <Progress value={(skill.level * progress) / 100} className="h-2" />
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
-            </div>
-          ))}
+                    ))}
+                  </CardContent>
+                </Card>
+              </div>
+            )
+          })}
         </div>
       </div>
     </section>
