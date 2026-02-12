@@ -3,7 +3,7 @@
     {
       "id": "profile",
       "description": "Profile picture for Netra Mehandiratta",
-      "imageUrl": "https://storage.googleapis.com/aif-starlark/2024-08-01/fd7c5b61-9c8c-4f05-88f2-8958564f3377.jpeg",
+      "imageUrl": "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxwcm9maWxlJTIwcGljdHVyZXxlbnwwfHx8fDE3NzA4OTMxNzJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "profile picture"
     }
   ]
