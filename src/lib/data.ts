@@ -94,11 +94,11 @@ export const aboutSkills = [
 export const projects = [
   {
     id: 'project-1',
-    title: 'Project Alpha',
-    description: 'A brief description of Project Alpha, highlighting its purpose and key features.',
-    techStack: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Firebase'],
+    title: 'CyberGuardian',
+    description: 'A cyber-awareness learning website with chatbot guidance, built using Odoo to teach users how to stay safe online.',
+    techStack: ['Python', 'Odoo', 'PostgreSQL', 'HTML', 'CSS', 'JavaScript', 'QWeb'],
     githubUrl: 'https://github.com',
-    liveDemoUrl: null,
+    liveDemoUrl: 'https://cyberguardian.odoo.com',
   },
   {
     id: 'project-2',
