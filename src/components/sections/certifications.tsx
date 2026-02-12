@@ -24,10 +24,10 @@ export default function CertificationsSection() {
                         <cert.icon className="h-4 w-4 text-primary" />
                       </div>
                     </div>
-                    <div className="space-y-1">
+                    <div className="space-y-1.5">
                       <h3 className="font-bold leading-none">{cert.title}</h3>
-                      <p className="text-sm text-foreground/80">{cert.issuer}</p>
-                      <p className="text-xs text-foreground/60">{cert.date}</p>
+                      <p className="text-sm text-foreground/80">{cert.issuer} &middot; {cert.date}</p>
+                      <p className="text-sm text-foreground/70">{cert.description}</p>
                     </div>
                   </div>
                 ))}
