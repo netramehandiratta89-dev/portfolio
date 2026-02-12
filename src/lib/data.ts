@@ -17,7 +17,7 @@ import {
 export const personalInfo = {
   name: "Netra Mehandiratta",
   tagline: "Developer | Problem Solver",
-  resumeUrl: "/resume.pdf",
+  resumeUrl: "https://ibb.co/DD7fJV3N",
 };
 
 export const socialLinks = [
