@@ -103,32 +103,7 @@ export const aboutSkills = [
 ];
 
 
-export const projects = [
-  {
-    id: "project-dsa",
-    title: "DSA Programs in C",
-    description: "A collection of fundamental Data Structures and Algorithms implemented in C, showcasing problem-solving and foundational programming skills.",
-    techStack: ["C", "Data Structures", "Algorithms"],
-    githubUrl: "https://github.com",
-    liveDemoUrl: null,
-  },
-  {
-    id: "project-ai-career",
-    title: "Career Guidance AI Website",
-    description: "An AI-powered web application that provides personalized career recommendations based on user skills and interests. Built with Next.js and Firebase.",
-    techStack: ["Next.js", "React", "Firebase", "GenAI"],
-    githubUrl: "https://github.com",
-    liveDemoUrl: "https://example.com",
-  },
-  {
-    id: "project-portfolio",
-    title: "Personal Portfolio Website",
-    description: "This very website, designed to showcase my skills and projects. Built with Next.js, Tailwind CSS, and hosted on a modern platform.",
-    techStack: ["Next.js", "Tailwind CSS", "Supabase", "Firebase"],
-    githubUrl: "https://github.com",
-    liveDemoUrl: "#",
-  },
-];
+export const projects = [];
 
 export const certifications = [
   {

@@ -25,12 +25,6 @@ export default function HeroSection() {
           <AnimatedTyping strings={skills} />
         </div>
         <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-          <Button asChild size="lg" className="hover:shadow-primary/50 hover:shadow-lg transition-shadow">
-            <a href="#projects">
-              <Eye className="mr-2 h-5 w-5" />
-              View Projects
-            </a>
-          </Button>
           <Button asChild variant="outline" size="lg" className="border-primary/50 text-primary hover:bg-primary/10 hover:text-primary">
             <a href="#contact">
               <Send className="mr-2 h-5 w-5" />
