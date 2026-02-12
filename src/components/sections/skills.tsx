@@ -1,6 +1,3 @@
-'use client';
-
-import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { getSkillCategories } from '@/app/actions';
@@ -23,17 +20,10 @@ type SkillCategory = {
   skills: Skill[];
 };
 
-export default function SkillsSection() {
-  const [progress, setProgress] = useState(0);
-  const [skillCategories, setSkillCategories] = useState<SkillCategory[]>([]);
+export default async function SkillsSection() {
+  const skillCategories: SkillCategory[] = await getSkillCategories();
 
-  useEffect(() => {
-    const timer = setTimeout(() => setProgress(100), 500);
-    getSkillCategories().then(data => setSkillCategories(data || []));
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (skillCategories.length === 0) {
+  if (!skillCategories || skillCategories.length === 0) {
     return null;
   }
 
@@ -77,7 +67,7 @@ export default function SkillsSection() {
                           <p className="font-medium">{skill.name}</p>
                           <p className="text-sm text-foreground/80">{skill.level}%</p>
                         </div>
-                        <Progress value={(skill.level * progress) / 100} className="h-2" />
+                        <Progress value={skill.level} className="h-2" />
                       </div>
                     ))}
                   </CardContent>

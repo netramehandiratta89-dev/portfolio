@@ -36,7 +36,7 @@ export default async function ProjectsSection() {
                 )}
                 <CardHeader>
                   <CardTitle className="font-headline text-xl">{project.title}</CardTitle>
-                  <CardDescription className="text-foreground/70 h-10">{project.description}</CardDescription>
+                  <CardDescription className="text-foreground/70">{project.description}</CardDescription>
                 </CardHeader>
                 <CardContent className="flex-grow">
                   <div className="flex flex-wrap gap-2">
