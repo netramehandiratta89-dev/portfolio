@@ -1,17 +1,8 @@
 import {
-  Code,
   Github,
   Linkedin,
   Mail,
   Smartphone,
-  Server,
-  Database,
-  Globe,
-  GitBranch,
-  Settings,
-  Cpu,
-  BookOpen,
-  Award,
 } from 'lucide-react';
 
 export const personalInfo = {
@@ -32,27 +23,4 @@ export const contactInfo = {
 
 export const about = {
   intro: "I am a passionate Computer Science student with a strong interest in software development. I thrive on solving complex problems and continuously learning new technologies. My goal is to leverage my skills to build innovative solutions.",
-  education: [
-    {
-      degree: "Bachelors in Computer Applications",
-      institution: "Bharati Vidyapeeth Institute of Management & Research, Delhi",
-      period: "2025 - 2028",
-      icon: BookOpen,
-    },
-    {
-      degree: "Class 12th (Commerce without Maths with IP)",
-      institution: "Modern Public School, Shalimar Bagh",
-      period: "Passed out in 2025",
-      icon: Award,
-    },
-  ],
 };
-
-export const aboutSkills = [
-  { name: "C / C++", icon: Cpu },
-  { name: "DSA", icon: GitBranch },
-  { name: "Web Development", icon: Globe },
-  { name: "Firebase", icon: Server },
-  { name: "Supabase", icon: Database },
-  { name: "GitHub", icon: Github },
-];
