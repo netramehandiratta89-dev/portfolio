@@ -29,7 +29,7 @@ export const socialLinks = [
 ];
 
 export const contactInfo = {
-  email: "contact@johndoe.com",
+  email: "contact@netramehandiratta.com",
   phone: "+1 123 456 7890",
 };
 
@@ -37,10 +37,16 @@ export const about = {
   intro: "I am a passionate Computer Science student with a strong interest in cybersecurity and software development. I thrive on solving complex problems and continuously learning new technologies. My goal is to leverage my skills to build secure and innovative solutions.",
   education: [
     {
-      degree: "Bachelor of Science in Computer Science",
-      institution: "University of Technology",
-      period: "2021 - 2025",
+      degree: "Bachelors in Computer Applications",
+      institution: "Bharati Vidyapeeth's Institute of Management & Research, Delhi",
+      period: "2025 - 2028",
       icon: BookOpen,
+    },
+    {
+      degree: "Class 12th (Commerce without Maths with IP)",
+      institution: "Modern Public School, Shalimar Bagh",
+      period: "Passed out in 2025",
+      icon: Award,
     },
   ],
 };
