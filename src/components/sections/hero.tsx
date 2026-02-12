@@ -25,7 +25,7 @@ export default function HeroSection() {
             width={200}
             height={200}
             priority
-            className="mb-6 rounded-full object-cover shadow-lg"
+            className="mb-6 rounded-lg object-cover shadow-lg"
             data-ai-hint={profileImage.imageHint}
           />
         )}
