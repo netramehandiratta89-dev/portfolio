@@ -4,9 +4,11 @@ import { personalInfo } from '@/lib/data';
 import AnimatedTyping from '@/components/ui/animated-typing';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { getSkills } from '@/app/actions';
 
-export default function HeroSection() {
-  const skills = ["Web Development", "Problem Solving", "C++", "Python"];
+export default async function HeroSection() {
+  const skillsData = await getSkills();
+  const skills = skillsData.length > 0 ? skillsData.map(s => s.name) : ["Developer", "Problem Solver"];
   const profileImage = PlaceHolderImages.find(p => p.id === 'profile');
 
   return (
