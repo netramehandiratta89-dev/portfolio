@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { skillCategories } from '@/lib/data';
+import { cn } from '@/lib/utils';
 
 export default function SkillsSection() {
   const [progress, setProgress] = useState(0);
@@ -25,25 +26,39 @@ export default function SkillsSection() {
               A glimpse into my technical toolkit, from programming languages to development tools.
             </p>
         </div>
-        <div className="mt-12 grid gap-8 md:grid-cols-2">
-          {skillCategories.map((category) => (
-            <Card key={category.title} className="glass-card">
-              <CardHeader className="flex flex-row items-center gap-4">
-                <category.icon className="h-8 w-8 text-primary" />
-                <CardTitle className="font-headline text-2xl">{category.title}</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                {category.skills.map((skill) => (
-                  <div key={skill.name} className="space-y-2">
-                    <div className="flex justify-between">
-                      <p className="font-medium">{skill.name}</p>
-                      <p className="text-sm text-foreground/80">{skill.level}%</p>
+        <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2">
+          {skillCategories.map((category, index) => (
+            <div
+              key={category.title}
+              className={cn({
+                'md:col-span-2 flex justify-center':
+                  skillCategories.length % 2 !== 0 && index === skillCategories.length - 1,
+              })}
+            >
+              <Card
+                className={cn('glass-card w-full', {
+                  'md:w-1/2':
+                    skillCategories.length % 2 !== 0 &&
+                    index === skillCategories.length - 1,
+                })}
+              >
+                <CardHeader className="flex flex-row items-center gap-4">
+                  <category.icon className="h-8 w-8 text-primary" />
+                  <CardTitle className="font-headline text-2xl">{category.title}</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  {category.skills.map((skill) => (
+                    <div key={skill.name} className="space-y-2">
+                      <div className="flex justify-between">
+                        <p className="font-medium">{skill.name}</p>
+                        <p className="text-sm text-foreground/80">{skill.level}%</p>
+                      </div>
+                      <Progress value={(skill.level * progress) / 100} className="h-2" />
                     </div>
-                    <Progress value={(skill.level * progress) / 100} className="h-2" />
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
+                  ))}
+                </CardContent>
+              </Card>
+            </div>
           ))}
         </div>
       </div>
