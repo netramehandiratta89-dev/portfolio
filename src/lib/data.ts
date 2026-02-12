@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 
 export const personalInfo = {
-  name: "netra Mehandiratta",
+  name: "Netra Mehandiratta",
   tagline: "Cybersecurity Enthusiast | Developer | Problem Solver",
   resumeUrl: "/resume.pdf",
 };
