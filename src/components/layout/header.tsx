@@ -38,13 +38,13 @@ export default function Header() {
       )}
     >
       {navLinks.map((link) => (
-        <Link key={link.href} href={link.href} legacyBehavior>
-          <a
-            onClick={handleLinkClick}
-            className="font-medium text-foreground/80 transition-colors hover:text-primary"
-          >
-            {link.label}
-          </a>
+        <Link
+          key={link.href}
+          href={link.href}
+          onClick={handleLinkClick}
+          className="font-medium text-foreground/80 transition-colors hover:text-primary"
+        >
+          {link.label}
         </Link>
       ))}
       <div className={cn("flex items-center gap-2", isMobile ? 'pt-4 flex-wrap' : 'pl-4')}>
