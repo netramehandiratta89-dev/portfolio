@@ -3,9 +3,11 @@ import { Download, Send } from 'lucide-react';
 import { personalInfo } from '@/lib/data';
 import AnimatedTyping from '@/components/ui/animated-typing';
 import Image from 'next/image';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export default function HeroSection() {
   const skills = ["Cybersecurity", "Web Development", "Problem Solving", "C++", "Python"];
+  const profileImage = PlaceHolderImages.find(p => p.id === 'profile');
 
   return (
     <section id="home" className="relative flex h-[calc(100vh-80px)] min-h-[700px] w-full items-center justify-center overflow-hidden pt-20">
@@ -16,14 +18,17 @@ export default function HeroSection() {
       </div>
 
       <div className="container relative z-10 mx-auto flex flex-col items-center justify-center px-4 text-center md:px-6">
-        <Image
-          src="/profile.jpg"
-          alt="Netra Mehandiratta"
-          width={160}
-          height={160}
-          priority
-          className="mb-6 rounded-full border-4 border-primary/30 object-cover shadow-lg"
-        />
+        {profileImage && (
+          <Image
+            src={profileImage.imageUrl}
+            alt="Netra Mehandiratta"
+            width={160}
+            height={160}
+            priority
+            className="mb-6 rounded-full border-4 border-primary/30 object-cover shadow-lg"
+            data-ai-hint={profileImage.imageHint}
+          />
+        )}
         <h1 className="font-headline text-5xl font-bold tracking-tighter sm:text-7xl md:text-8xl lg:text-9xl">
           {personalInfo.name}
         </h1>
