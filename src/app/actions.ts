@@ -1,9 +1,14 @@
 'use server';
 
-import { supabase } from '@/lib/supabase';
+import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { revalidatePath } from 'next/cache';
 
+export async function getSupabaseConfigStatus() {
+  return isSupabaseConfigured;
+}
+
 export async function getMessages() {
+  if (!supabase) return [];
   const { data, error } = await supabase
     .from('messages')
     .select('*')
@@ -17,6 +22,7 @@ export async function getMessages() {
 }
 
 export async function addMessage(formData: { name: string; email: string; message: string; }) {
+  if (!supabase) return { success: false, error: 'Supabase is not configured.' };
   const { error } = await supabase
     .from('messages')
     .insert([formData]);
@@ -29,6 +35,7 @@ export async function addMessage(formData: { name: string; email: string; messag
 }
 
 export async function deleteMessage(id: number) {
+  if (!supabase) return { success: false, error: 'Supabase is not configured.' };
   const { error } = await supabase
     .from('messages')
     .delete()
@@ -44,6 +51,7 @@ export async function deleteMessage(id: number) {
 
 // Project Actions
 export async function getProjects() {
+  if (!supabase) return [];
   const { data, error } = await supabase
     .from('projects')
     .select('*')
@@ -61,6 +69,7 @@ export async function getProjects() {
 }
 
 export async function addProject(project: any) {
+  if (!supabase) return { success: false, error: 'Supabase is not configured.' };
   const { data, error } = await supabase
     .from('projects')
     .insert([project])
@@ -77,6 +86,7 @@ export async function addProject(project: any) {
 }
 
 export async function updateProject(id: string, project: any) {
+    if (!supabase) return { success: false, error: 'Supabase is not configured.' };
     const { data, error } = await supabase
     .from('projects')
     .update(project)
@@ -95,6 +105,7 @@ export async function updateProject(id: string, project: any) {
 
 
 export async function deleteProject(id: string) {
+  if (!supabase) return { success: false, error: 'Supabase is not configured.' };
   const { error } = await supabase
     .from('projects')
     .delete()
@@ -111,6 +122,7 @@ export async function deleteProject(id: string) {
 
 // Certification Actions
 export async function getCertifications() {
+  if (!supabase) return [];
   const { data, error } = await supabase
     .from('certifications')
     .select('*')
@@ -125,6 +137,7 @@ export async function getCertifications() {
 }
 
 export async function addCertification(cert: any) {
+  if (!supabase) return { success: false, error: 'Supabase is not configured.' };
   const { data, error } = await supabase.from('certifications').insert([cert]).select().single();
   if (error) return { success: false, error: error.message };
   revalidatePath('/'); revalidatePath('/admin');
@@ -132,6 +145,7 @@ export async function addCertification(cert: any) {
 }
 
 export async function updateCertification(id: string, cert: any) {
+  if (!supabase) return { success: false, error: 'Supabase is not configured.' };
   const { data, error } = await supabase.from('certifications').update(cert).match({ id }).select().single();
   if (error) return { success: false, error: error.message };
   revalidatePath('/'); revalidatePath('/admin');
@@ -139,6 +153,7 @@ export async function updateCertification(id: string, cert: any) {
 }
 
 export async function deleteCertification(id: string) {
+  if (!supabase) return { success: false, error: 'Supabase is not configured.' };
   const { error } = await supabase.from('certifications').delete().match({ id });
   if (error) return { success: false, error: error.message };
   revalidatePath('/'); revalidatePath('/admin');
@@ -148,6 +163,7 @@ export async function deleteCertification(id: string) {
 
 // Skill Categories Actions
 export async function getSkillCategories() {
+  if (!supabase) return [];
   const { data, error } = await supabase
     .from('skill_categories')
     .select('*, skills(*)')
@@ -162,6 +178,7 @@ export async function getSkillCategories() {
 }
 
 export async function addSkillCategory(category: any) {
+  if (!supabase) return { success: false, error: 'Supabase is not configured.' };
   const { data, error } = await supabase.from('skill_categories').insert([category]).select().single();
   if (error) return { success: false, error: error.message };
   revalidatePath('/'); revalidatePath('/admin');
@@ -169,6 +186,7 @@ export async function addSkillCategory(category: any) {
 }
 
 export async function updateSkillCategory(id: string, category: any) {
+  if (!supabase) return { success: false, error: 'Supabase is not configured.' };
   const { data, error } = await supabase.from('skill_categories').update(category).match({ id }).select().single();
   if (error) return { success: false, error: error.message };
   revalidatePath('/'); revalidatePath('/admin');
@@ -176,6 +194,7 @@ export async function updateSkillCategory(id: string, category: any) {
 }
 
 export async function deleteSkillCategory(id: string) {
+  if (!supabase) return { success: false, error: 'Supabase is not configured.' };
   const { error } = await supabase.from('skill_categories').delete().match({ id });
   if (error) return { success: false, error: error.message };
   revalidatePath('/'); revalidatePath('/admin');
@@ -185,6 +204,7 @@ export async function deleteSkillCategory(id: string) {
 
 // Skills Actions
 export async function getSkills() {
+    if (!supabase) return [];
     const { data, error } = await supabase.from('skills').select('*').order('name', { ascending: true });
     if (error) {
         console.error('Error fetching skills:', error);
@@ -195,6 +215,7 @@ export async function getSkills() {
 }
 
 export async function addSkill(skill: any) {
+  if (!supabase) return { success: false, error: 'Supabase is not configured.' };
   const { data, error } = await supabase.from('skills').insert([skill]).select().single();
   if (error) return { success: false, error: error.message };
   revalidatePath('/'); revalidatePath('/admin');
@@ -202,6 +223,7 @@ export async function addSkill(skill: any) {
 }
 
 export async function updateSkill(id: string, skill: any) {
+  if (!supabase) return { success: false, error: 'Supabase is not configured.' };
   const { data, error } = await supabase.from('skills').update(skill).match({ id }).select().single();
   if (error) return { success: false, error: error.message };
   revalidatePath('/'); revalidatePath('/admin');
@@ -209,6 +231,7 @@ export async function updateSkill(id: string, skill: any) {
 }
 
 export async function deleteSkill(id: string) {
+  if (!supabase) return { success: false, error: 'Supabase is not configured.' };
   const { error } = await supabase.from('skills').delete().match({ id });
   if (error) return { success: false, error: error.message };
   revalidatePath('/'); revalidatePath('/admin');

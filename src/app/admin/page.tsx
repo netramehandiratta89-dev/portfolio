@@ -8,14 +8,15 @@ import {
   getMessages, deleteMessage, getProjects, addProject, updateProject, deleteProject,
   getCertifications, addCertification, updateCertification, deleteCertification,
   getSkillCategories, addSkillCategory, updateSkillCategory, deleteSkillCategory,
-  getSkills, addSkill, updateSkill, deleteSkill
+  getSkills, addSkill, updateSkill, deleteSkill,
+  getSupabaseConfigStatus
 } from '@/app/actions';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useToast } from '@/hooks/use-toast';
-import { Trash2, Inbox, Briefcase, Plus, Edit, Award, Cpu } from 'lucide-react';
+import { Trash2, Inbox, Briefcase, Plus, Edit, Award, Cpu, TriangleAlert } from 'lucide-react';
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
@@ -53,6 +54,7 @@ const skillFormSchema = z.object({
 export default function AdminPage() {
   const { toast } = useToast();
   // State
+  const [isConfigured, setIsConfigured] = useState<boolean | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
   const [certifications, setCertifications] = useState<Certification[]>([]);
@@ -86,7 +88,12 @@ export default function AdminPage() {
   };
 
   useEffect(() => {
-    fetchData();
+    getSupabaseConfigStatus().then(status => {
+      setIsConfigured(status);
+      if (status) {
+        fetchData();
+      }
+    });
   }, []);
   
   // Generic delete handler
@@ -168,6 +175,41 @@ export default function AdminPage() {
       toast({ variant: 'destructive', title: 'Something went wrong.', description: result.error });
     }
   };
+
+  if (isConfigured === null) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center bg-background">
+          <p>Loading configuration...</p>
+      </div>
+    );
+  }
+
+  if (!isConfigured) {
+    return (
+        <div className="min-h-screen bg-muted/40 p-4 md:p-8">
+            <div className="max-w-3xl mx-auto">
+                <Card className="border-destructive">
+                    <CardHeader>
+                        <CardTitle className="text-destructive flex items-center gap-2">
+                            <TriangleAlert className="h-6 w-6"/> Configuration Needed
+                        </CardTitle>
+                        <CardDescription>
+                            Your Supabase credentials are not configured correctly.
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <p className="mb-4">To use the admin panel, you need to connect to your Supabase project. Please add your project URL and service role key to the <code>.env.local</code> file, then restart the development server.</p>
+                        <div className="font-mono bg-muted p-4 rounded-md text-sm">
+                            <p>NEXT_PUBLIC_SUPABASE_URL="YOUR_SUPABASE_URL"</p>
+                            <p>SUPABASE_SERVICE_ROLE_KEY="YOUR_SUPABASE_SERVICE_ROLE_KEY"</p>
+                        </div>
+                        <p className="mt-4 text-sm text-muted-foreground">You can find these keys in your Supabase project settings under the "API" section.</p>
+                    </CardContent>
+                </Card>
+            </div>
+        </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-muted/40 p-4 md:p-8">
