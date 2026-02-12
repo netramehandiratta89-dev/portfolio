@@ -2,7 +2,6 @@ import {
   Code,
   Github,
   Linkedin,
-  Instagram,
   Mail,
   Smartphone,
   Server,
@@ -25,7 +24,6 @@ export const personalInfo = {
 export const socialLinks = [
   { name: 'LinkedIn', url: 'https://www.linkedin.com/in/netra-mehandiratta-31498b396?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app', icon: Linkedin },
   { name: 'GitHub', url: 'https://github.com', icon: Github },
-  { name: 'Instagram', url: 'https://instagram.com', icon: Instagram },
 ];
 
 export const contactInfo = {
