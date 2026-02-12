@@ -47,11 +47,13 @@ export default function ProjectsSection() {
                   </div>
                 </CardContent>
                 <CardFooter className="flex justify-end gap-2 bg-black/10 p-4">
-                  <Button variant="outline" size="sm" asChild>
-                    <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
-                      <Github className="mr-2 h-4 w-4" /> GitHub
-                    </a>
-                  </Button>
+                  {project.githubUrl && (
+                    <Button variant="outline" size="sm" asChild>
+                      <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
+                        <Github className="mr-2 h-4 w-4" /> GitHub
+                      </a>
+                    </Button>
+                  )}
                   {project.liveDemoUrl && (
                     <Button size="sm" asChild>
                       <a href={project.liveDemoUrl} target="_blank" rel="noopener noreferrer">

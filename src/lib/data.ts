@@ -97,7 +97,6 @@ export const projects = [
     title: 'CyberGuardian',
     description: 'A cyber-awareness learning website with chatbot guidance, built using Odoo to teach users how to stay safe online.',
     techStack: ['Python', 'Odoo', 'PostgreSQL', 'HTML', 'CSS', 'JavaScript', 'QWeb'],
-    githubUrl: 'https://github.com',
     liveDemoUrl: 'https://cyberguardian.odoo.com',
   },
   {
