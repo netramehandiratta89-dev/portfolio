@@ -8,7 +8,7 @@ import {
 export const personalInfo = {
   name: "Netra Mehandiratta",
   tagline: "Developer | Problem Solver",
-  resumeUrl: "",
+  resumeUrl: "/Netra_Mehandiratta_Resume.pdf",
 };
 
 export const socialLinks = [
