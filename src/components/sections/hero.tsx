@@ -16,7 +16,7 @@ export default async function HeroSection() {
   const resumeUrl = settings.resume_url || '';
 
   return (
-    <section id="home" className="relative flex h-[calc(100vh-80px)] min-h-[700px] w-full items-center justify-center pt-20">
+    <section id="home" className="relative flex h-[calc(100vh-80px)] min-h-[600px] w-full items-center justify-center pt-20 sm:min-h-[700px]">
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-background" />
         <div className="absolute inset-0 bg-grid-primary/5 [mask-image:linear-gradient(to_bottom,white_5%,transparent_90%)]"></div>
@@ -31,7 +31,7 @@ export default async function HeroSection() {
             width={200}
             height={200}
             priority
-            className="mb-6 rounded-lg object-cover shadow-lg"
+            className="mb-6 h-36 w-36 rounded-lg object-cover shadow-lg sm:h-48 sm:w-48"
             data-ai-hint={profileImage.imageHint}
           />
         )}

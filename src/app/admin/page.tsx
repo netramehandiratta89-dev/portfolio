@@ -247,7 +247,7 @@ export default function AdminPage() {
     <div className="min-h-screen bg-muted/40 p-4 md:p-8">
       <div className="max-w-7xl mx-auto grid gap-8">
         <header>
-          <h1 className="font-headline text-3xl font-bold">Admin Panel</h1>
+          <h1 className="font-headline text-2xl font-bold md:text-3xl">Admin Panel</h1>
           <p className="text-foreground/80">Manage your portfolio content.</p>
         </header>
 
@@ -386,7 +386,7 @@ export default function AdminPage() {
           <CardContent><ScrollArea className="h-[40vh]"><Table>
             <TableHeader><TableRow><TableHead>Received</TableHead><TableHead>From</TableHead><TableHead>Message</TableHead><TableHead className="text-right">Actions</TableHead></TableRow></TableHeader>
             <TableBody>{messages.length > 0 ? messages.map((msg) => (
-              <TableRow key={msg.id}><TableCell className="w-[180px]">{new Date(msg.created_at).toLocaleString()}</TableCell><TableCell><div className="font-medium">{msg.name}</div><div className="text-sm text-foreground/70">{msg.email}</div></TableCell><TableCell><p className="max-w-md truncate">{msg.message}</p></TableCell><TableCell className="text-right">
+              <TableRow key={msg.id}><TableCell className="whitespace-nowrap">{new Date(msg.created_at).toLocaleString()}</TableCell><TableCell><div className="font-medium">{msg.name}</div><div className="text-sm text-foreground/70">{msg.email}</div></TableCell><TableCell><p className="max-w-md truncate">{msg.message}</p></TableCell><TableCell className="text-right">
                 <AlertDialog><AlertDialogTrigger asChild><Button variant="ghost" size="icon"><Trash2 className="h-4 w-4 text-destructive" /></Button></AlertDialogTrigger>
                   <AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Are you sure?</AlertDialogTitle><AlertDialogDescription>This will permanently delete the message.</AlertDialogDescription></AlertDialogHeader>
                     <AlertDialogFooter><AlertDialogCancel>Cancel</AlertDialogCancel><AlertDialogAction onClick={() => handleDelete(msg.id, deleteMessage, 'Message')} className="bg-destructive hover:bg-destructive/90">Delete</AlertDialogAction></AlertDialogFooter>
