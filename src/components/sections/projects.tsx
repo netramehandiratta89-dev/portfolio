@@ -222,14 +222,14 @@ const ProjectCard = ({ project }: { project: any }) => {
                           src={project.imageUrl}
                           alt={project.title}
                           fill
-                          className="object-contain transition-transform duration-300 group-hover:scale-105"
+                          className="object-contain p-4 transition-transform duration-300 group-hover:scale-105"
                           data-ai-hint={project.imageHint || ''}
                         />
                       </div>
                     )}
                     <CardHeader>
-                      <CardTitle className="font-headline text-xl text-white">{project.title}</CardTitle>
-                      <CardDescription className="text-white/70 pt-2 break-words">{project.description}</CardDescription>
+                      <CardTitle className="font-headline text-xl text-white text-left">{project.title}</CardTitle>
+                      <CardDescription className="text-white/70 pt-2 break-words text-left">{project.description}</CardDescription>
                     </CardHeader>
                     <CardContent className="flex-grow">
                       <div className="flex flex-wrap gap-2">

@@ -9,8 +9,6 @@
 
 .pc-card-wrapper {
   position: relative;
-  width: 320px;
-  height: 480px;
   perspective: 1200px;
   transform-style: preserve-3d;
   display: grid;
