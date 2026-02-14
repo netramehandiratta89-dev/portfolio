@@ -1,6 +1,7 @@
 import { getSettings } from '@/app/actions';
 import ProfileCard from '@/components/ui/ProfileCard';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import ElectricBorder from '@/components/ui/ElectricBorder';
 
 export default async function AboutSection() {
   const settings = await getSettings();
@@ -21,12 +22,14 @@ export default async function AboutSection() {
             <p className="max-w-xl mx-auto lg:mx-0 text-foreground/80 md:text-lg">{aboutIntro}</p>
           </div>
           <div className="flex justify-center">
-            <ProfileCard
-              avatarUrl={profileImage?.imageUrl}
-              name={name}
-              title={tagline}
-              showUserInfo={false}
-            />
+            <ElectricBorder color="hsl(var(--primary))" borderRadius={24}>
+              <ProfileCard
+                avatarUrl={profileImage?.imageUrl}
+                name={name}
+                title={tagline}
+                showUserInfo={false}
+              />
+            </ElectricBorder>
           </div>
         </div>
       </div>
