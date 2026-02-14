@@ -4,6 +4,7 @@ import AnimatedTyping from '@/components/ui/animated-typing';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { getSkills, getSettings } from '@/app/actions';
+import FuzzyText from '@/components/ui/fuzzy-text';
 
 export default async function HeroSection() {
   const skillsData = await getSkills();
@@ -35,9 +36,24 @@ export default async function HeroSection() {
             data-ai-hint={profileImage.imageHint}
           />
         )}
-        <h1 className="font-headline text-5xl font-bold tracking-tighter sm:text-7xl md:text-8xl lg:text-9xl">
-          {name}
-        </h1>
+        <div className="h-24 sm:h-32 md:h-40 lg:h-48 flex items-center justify-center">
+            <FuzzyText
+              fontSize="clamp(2.5rem, 10vw, 8rem)"
+              fontWeight={700}
+              fontFamily="Space Grotesk"
+              color="hsl(var(--foreground))"
+              baseIntensity={0.1}
+              hoverIntensity={0.25}
+              glitchMode={true}
+              glitchInterval={3000}
+              glitchDuration={300}
+              clickEffect={true}
+              letterSpacing={-5}
+            >
+              {name}
+            </FuzzyText>
+        </div>
+
         <p className="mt-4 max-w-[700px] text-lg text-foreground/80 md:text-xl">
           {tagline}
         </p>
@@ -52,8 +68,8 @@ export default async function HeroSection() {
             </a>
           </Button>
           {resumeUrl && (
-            <Button asChild variant="secondary" size="lg">
-              <a href={resumeUrl} download>
+            <Button asChild size="lg" className="glow-btn">
+              <a href={resumeUrl} target="_blank" rel="noopener noreferrer">
                 <Download className="mr-2 h-5 w-5" />
                 Download Resume
               </a>
