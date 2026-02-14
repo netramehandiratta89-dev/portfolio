@@ -1,11 +1,19 @@
-import Link from 'next/link';
-import { socialLinks } from '@/lib/data';
-import { Button } from '@/components/ui/button';
+'use client';
+
 import { Code } from 'lucide-react';
+import { socialLinks } from '@/lib/data';
+import { LogoLoop } from '@/components/ui/LogoLoop';
+
 
 export default function Footer({ settings }: { settings: { [key: string]: string } }) {
   const currentYear = new Date().getFullYear();
   const name = settings.name || 'User';
+
+  const socialLogos = socialLinks.map(link => ({
+    ...link,
+    href: link.url,
+    ariaLabel: link.name,
+  }));
 
   return (
     <footer className="border-t border-white/10">
@@ -17,14 +25,19 @@ export default function Footer({ settings }: { settings: { [key: string]: string
         <div className="text-center text-sm text-foreground/60">
           &copy; {currentYear} {name}. All rights reserved.
         </div>
-        <div className="flex items-center gap-2">
-          {socialLinks.map((link) => (
-            <Button key={link.name} variant="ghost" size="icon" asChild>
-              <a href={link.url} target="_blank" rel="noopener noreferrer" aria-label={link.name}>
-                <link.icon className="h-5 w-5 text-foreground/80 transition-colors hover:text-primary" />
+        <div className="w-48">
+          <LogoLoop
+            logos={socialLogos}
+            speed={40}
+            logoHeight={24}
+            gap={64}
+            pauseOnHover={true}
+            renderItem={(item, key) => (
+               <a href={item.href} target="_blank" rel="noopener noreferrer" aria-label={item.name} key={key}>
+                <item.icon className="h-6 w-6 text-foreground/80 transition-colors hover:text-primary" />
               </a>
-            </Button>
-          ))}
+            )}
+          />
         </div>
       </div>
     </footer>
