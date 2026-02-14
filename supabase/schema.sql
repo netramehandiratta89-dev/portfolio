@@ -1,13 +1,15 @@
--- Create the 'education' table
-CREATE TABLE public.education (
-    id text NOT NULL,
-    created_at timestamp with time zone NOT NULL DEFAULT now(),
-    institution text NOT NULL,
-    degree text NOT NULL,
-    date_range text NOT NULL,
-    description text,
-    CONSTRAINT education_pkey PRIMARY KEY (id)
+-- Create education table
+create table public.education (
+  id text not null,
+  created_at timestamp with time zone not null default now(),
+  institution text null,
+  degree text null,
+  date_range text null,
+  description text null,
+  constraint education_pkey primary key (id)
 );
 
 -- Disable Row Level Security (RLS) for the education table
-ALTER TABLE public.education DISABLE ROW LEVEL SECURITY;
+-- This allows public read and write access to the table.
+-- For production apps, you should enable RLS and define policies.
+alter table public.education disable row level security;

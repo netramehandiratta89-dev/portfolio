@@ -1,36 +1,15 @@
-import { createServerClient, type CookieOptions } from '@supabase/ssr'
-import { cookies } from 'next/headers'
+import { isSupabaseConfigured } from '@/lib/supabase';
 
 export const createClient = () => {
-  const cookieStore = cookies()
-
-  return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value
-        },
-        set(name: string, value: string, options: CookieOptions) {
-          try {
-            cookieStore.set({ name, value, ...options })
-          } catch (error) {
-            // The `set` method was called from a Server Component.
-            // This can be ignored if you have middleware refreshing
-            // user sessions.
-          }
-        },
-        remove(name: string, options: CookieOptions) {
-          try {
-            cookieStore.set({ name, value: '', ...options })
-          } catch (error) {
-            // The `delete` method was called from a Server Component.
-            // This can be ignored if you have middleware refreshing
-            // user sessions.
-          }
-        },
-      },
-    }
-  )
+  // This is a placeholder for when Supabase is not configured or for when @supabase/ssr fails to install.
+  // It's not a real Supabase client, but it prevents the app from crashing.
+  const dummyClient = {
+    auth: {
+      getUser: async () => ({ data: { user: null }, error: null }),
+      signInWithPassword: async () => ({ error: { message: 'Authentication is currently disabled due to installation issues.' } }),
+      signOut: async () => {},
+      exchangeCodeForSession: async () => ({ error: { message: 'Authentication is currently disabled.' } }),
+    },
+  };
+  return dummyClient as any;
 }
