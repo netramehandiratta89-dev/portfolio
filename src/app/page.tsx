@@ -1,5 +1,6 @@
 import HeroSection from '@/components/sections/hero';
 import AboutSection from '@/components/sections/about';
+import EducationSection from '@/components/sections/education';
 import SkillsSection from '@/components/sections/skills';
 import ProjectsSection from '@/components/sections/projects';
 import CertificationsSection from '@/components/sections/certifications';
@@ -12,6 +13,7 @@ export default async function Home() {
     <div className="flex flex-col">
       <HeroSection />
       <AboutSection />
+      <EducationSection />
       <SkillsSection />
       <ProjectsSection />
       <CertificationsSection />

@@ -160,6 +160,46 @@ export async function deleteCertification(id: string) {
   return { success: true };
 }
 
+// Education Actions
+export async function getEducation() {
+  if (!supabase) return [];
+  const { data, error } = await supabase
+    .from('education')
+    .select('*')
+    .order('date_range', { ascending: false });
+
+  if (error) {
+    console.error('Error fetching education:', error);
+    if (error.code === '42P01') return [];
+    return [];
+  }
+  return data;
+}
+
+export async function addEducation(edu: any) {
+  if (!supabase) return { success: false, error: 'Supabase is not configured.' };
+  const { data, error } = await supabase.from('education').insert([edu]).select().single();
+  if (error) return { success: false, error: error.message };
+  revalidatePath('/'); revalidatePath('/admin');
+  return { success: true, data };
+}
+
+export async function updateEducation(id: string, edu: any) {
+  if (!supabase) return { success: false, error: 'Supabase is not configured.' };
+  const { data, error } = await supabase.from('education').update(edu).match({ id }).select().single();
+  if (error) return { success: false, error: error.message };
+  revalidatePath('/'); revalidatePath('/admin');
+  return { success: true, data };
+}
+
+export async function deleteEducation(id: string) {
+  if (!supabase) return { success: false, error: 'Supabase is not configured.' };
+  const { error } = await supabase.from('education').delete().match({ id });
+  if (error) return { success: false, error: error.message };
+  revalidatePath('/'); revalidatePath('/admin');
+  return { success: true };
+}
+
 
 // Skill Categories Actions
 export async function getSkillCategories() {

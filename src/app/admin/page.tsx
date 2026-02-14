@@ -7,6 +7,7 @@ import * as z from 'zod';
 import {
   getMessages, deleteMessage, getProjects, addProject, updateProject, deleteProject,
   getCertifications, addCertification, updateCertification, deleteCertification,
+  getEducation, addEducation, updateEducation, deleteEducation,
   getSkillCategories, addSkillCategory, updateSkillCategory, deleteSkillCategory,
   getSkills, addSkill, updateSkill, deleteSkill,
   getSupabaseConfigStatus,
@@ -18,7 +19,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useToast } from '@/hooks/use-toast';
-import { Trash2, Inbox, Briefcase, Plus, Edit, Award, Cpu, TriangleAlert, Cog } from 'lucide-react';
+import { Trash2, Inbox, Briefcase, Plus, Edit, Award, Cpu, TriangleAlert, Cog, BookOpen } from 'lucide-react';
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
@@ -38,6 +39,7 @@ import '@/components/ui/logout-button.css';
 type Message = { id: number; created_at: string; name: string; email: string; message: string; };
 type Project = { id: string; created_at: string; title: string; description: string; techStack: string[]; githubUrl: string | null; liveDemoUrl: string | null; imageUrl: string | null; imageHint: string | null; };
 type Certification = { id: string; created_at: string; title: string; issuer: string; date: string; description: string; };
+type Education = { id: string; created_at: string; institution: string; degree: string; date_range: string; description: string; };
 type SkillCategory = { id: string; created_at: string; title: string; icon: string; skills: Skill[] };
 type Skill = { id: string; created_at: string; name: string; level: number; category_id: string; };
 type Settings = { [key: string]: string };
@@ -50,6 +52,9 @@ const projectFormSchema = z.object({
 });
 const certificationFormSchema = z.object({
   title: z.string().min(2), issuer: z.string().min(2), date: z.string().min(4), description: z.string().min(10),
+});
+const educationFormSchema = z.object({
+  institution: z.string().min(2), degree: z.string().min(2), date_range: z.string().min(4), description: z.string().min(10),
 });
 const skillCategoryFormSchema = z.object({ title: z.string().min(2), icon: z.string().min(2) });
 const skillFormSchema = z.object({
@@ -72,6 +77,7 @@ export default function AdminPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
   const [certifications, setCertifications] = useState<Certification[]>([]);
+  const [education, setEducation] = useState<Education[]>([]);
   const [skillCategories, setSkillCategories] = useState<SkillCategory[]>([]);
   const [skills, setSkills] = useState<Skill[]>([]);
   const [settings, setSettings] = useState<Settings>({});
@@ -79,18 +85,21 @@ export default function AdminPage() {
   // Dialog states
   const [isProjectDialogOpen, setIsProjectDialogOpen] = useState(false);
   const [isCertDialogOpen, setIsCertDialogOpen] = useState(false);
+  const [isEducationDialogOpen, setIsEducationDialogOpen] = useState(false);
   const [isSkillCatDialogOpen, setIsSkillCatDialogOpen] = useState(false);
   const [isSkillDialogOpen, setIsSkillDialogOpen] = useState(false);
 
   // Editing states
   const [editingProject, setEditingProject] = useState<Project | null>(null);
   const [editingCert, setEditingCert] = useState<Certification | null>(null);
+  const [editingEducation, setEditingEducation] = useState<Education | null>(null);
   const [editingSkillCat, setEditingSkillCat] = useState<SkillCategory | null>(null);
   const [editingSkill, setEditingSkill] = useState<Skill | null>(null);
 
   // Forms
   const projectForm = useForm<z.infer<typeof projectFormSchema>>({ resolver: zodResolver(projectFormSchema), defaultValues: { title: '', description: '', techStack: '', githubUrl: '', liveDemoUrl: '', imageUrl: '', imageHint: '' } });
   const certForm = useForm<z.infer<typeof certificationFormSchema>>({ resolver: zodResolver(certificationFormSchema), defaultValues: { title: '', issuer: '', date: '', description: '' } });
+  const educationForm = useForm<z.infer<typeof educationFormSchema>>({ resolver: zodResolver(educationFormSchema), defaultValues: { institution: '', degree: '', date_range: '', description: '' } });
   const skillCatForm = useForm<z.infer<typeof skillCategoryFormSchema>>({ resolver: zodResolver(skillCategoryFormSchema), defaultValues: { title: '', icon: '' } });
   const skillForm = useForm<z.infer<typeof skillFormSchema>>({ resolver: zodResolver(skillFormSchema), defaultValues: { name: '', level: 80, category_id: '' } });
   const settingsForm = useForm<z.infer<typeof settingsFormSchema>>({
@@ -102,6 +111,7 @@ export default function AdminPage() {
     getMessages().then(setMessages);
     getProjects().then(setProjects);
     getCertifications().then(setCertifications);
+    getEducation().then(setEducation);
     getSkillCategories().then(setSkillCategories);
     getSkills().then(setSkills);
     getSettings().then(s => {
@@ -177,6 +187,23 @@ export default function AdminPage() {
     }
   };
   
+  // --- Education ---
+  const handleOpenEducationDialog = (edu: Education | null) => {
+    setEditingEducation(edu);
+    educationForm.reset(edu || { institution: '', degree: '', date_range: '', description: '' });
+    setIsEducationDialogOpen(true);
+  };
+  const onEducationSubmit = async (values: z.infer<typeof educationFormSchema>) => {
+    const result = await (editingEducation ? updateEducation(editingEducation.id, values) : addEducation({ ...values, id: `edu-${Date.now()}` }));
+    if (result.success) {
+      toast({ title: `Education ${editingEducation ? 'updated' : 'added'}.` });
+      fetchData();
+      setIsEducationDialogOpen(false);
+    } else {
+      toast({ variant: 'destructive', title: 'Something went wrong.', description: result.error });
+    }
+  };
+
   // --- Skill Categories ---
   const handleOpenSkillCatDialog = (cat: SkillCategory | null) => {
     setEditingSkillCat(cat);
@@ -311,6 +338,30 @@ export default function AdminPage() {
           </Table></ScrollArea></CardContent>
         </Card>
 
+        {/* Education Card */}
+        <Card className="glass-card">
+          <CardHeader className="flex-row items-center justify-between">
+            <div>
+              <CardTitle className="flex items-center gap-2 font-headline text-2xl"><BookOpen/> Education</CardTitle>
+              <CardDescription>Manage your education history.</CardDescription>
+            </div>
+            <Button onClick={() => handleOpenEducationDialog(null)}><Plus className="mr-2 h-4 w-4" /> Add Education</Button>
+          </CardHeader>
+          <CardContent><ScrollArea className="h-[30vh]"><Table>
+            <TableHeader><TableRow><TableHead>Institution</TableHead><TableHead className="hidden md:table-cell">Degree</TableHead><TableHead className="text-right">Actions</TableHead></TableRow></TableHeader>
+            <TableBody>{education.length > 0 ? education.map((e) => (
+              <TableRow key={e.id}><TableCell className="font-medium">{e.institution}</TableCell><TableCell className="hidden md:table-cell">{e.degree}</TableCell><TableCell className="text-right">
+                <Button variant="ghost" size="icon" onClick={() => handleOpenEducationDialog(e)}><Edit className="h-4 w-4" /></Button>
+                <AlertDialog><AlertDialogTrigger asChild><Button variant="ghost" size="icon"><Trash2 className="h-4 w-4 text-destructive" /></Button></AlertDialogTrigger>
+                  <AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Are you sure?</AlertDialogTitle><AlertDialogDescription>This will permanently delete this education entry.</AlertDialogDescription></AlertDialogHeader>
+                    <AlertDialogFooter><AlertDialogCancel>Cancel</AlertDialogCancel><AlertDialogAction onClick={() => handleDelete(e.id, deleteEducation, 'Education')} className="bg-destructive hover:bg-destructive/90">Delete</AlertDialogAction></AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </TableCell></TableRow>)) : <TableRow><TableCell colSpan={3} className="h-24 text-center">No education history yet.</TableCell></TableRow>}
+            </TableBody>
+          </Table></ScrollArea></CardContent>
+        </Card>
+
         {/* Certifications Card */}
         <Card className="glass-card">
           <CardHeader className="flex-row items-center justify-between">
@@ -426,6 +477,17 @@ export default function AdminPage() {
             <FormField control={certForm.control} name="issuer" render={({ field }) => (<FormItem><FormLabel>Issuer</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>)} />
             <FormField control={certForm.control} name="date" render={({ field }) => (<FormItem><FormLabel>Date</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>)} />
             <FormField control={certForm.control} name="description" render={({ field }) => (<FormItem><FormLabel>Description</FormLabel><FormControl><Textarea {...field} /></FormControl><FormMessage /></FormItem>)} />
+            <DialogFooter><DialogClose asChild><Button type="button" variant="secondary">Cancel</Button></DialogClose><Button type="submit">Save</Button></DialogFooter>
+        </form></Form>
+      </DialogContent></Dialog>
+
+      <Dialog open={isEducationDialogOpen} onOpenChange={setIsEducationDialogOpen}><DialogContent className="sm:max-w-[625px]">
+        <DialogHeader><DialogTitle>{editingEducation ? 'Edit' : 'Add'} Education</DialogTitle></DialogHeader>
+        <Form {...educationForm}><form onSubmit={educationForm.handleSubmit(onEducationSubmit)} className="space-y-4">
+            <FormField control={educationForm.control} name="institution" render={({ field }) => (<FormItem><FormLabel>Institution</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>)} />
+            <FormField control={educationForm.control} name="degree" render={({ field }) => (<FormItem><FormLabel>Degree/Course</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>)} />
+            <FormField control={educationForm.control} name="date_range" render={({ field }) => (<FormItem><FormLabel>Date Range</FormLabel><FormControl><Input placeholder="e.g., 2020-2024" {...field} /></FormControl><FormMessage /></FormItem>)} />
+            <FormField control={educationForm.control} name="description" render={({ field }) => (<FormItem><FormLabel>Description</FormLabel><FormControl><Textarea {...field} /></FormControl><FormMessage /></FormItem>)} />
             <DialogFooter><DialogClose asChild><Button type="button" variant="secondary">Cancel</Button></DialogClose><Button type="submit">Save</Button></DialogFooter>
         </form></Form>
       </DialogContent></Dialog>
