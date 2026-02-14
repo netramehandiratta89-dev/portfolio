@@ -7,6 +7,7 @@ import { ScrollProgressBar } from '@/components/layout/scroll-progress-bar';
 import { BackToTopButton } from '@/components/layout/back-to-top';
 import { Analytics } from '@vercel/analytics/react';
 import { getSettings } from '@/app/actions';
+import { AnimationInitializer } from '@/components/layout/animation-initializer';
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSettings();
@@ -37,6 +38,7 @@ export default async function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
       </head>
       <body className="font-body antialiased">
+        <AnimationInitializer />
         <ScrollProgressBar />
         <Header settings={settings} />
         <main>{children}</main>
