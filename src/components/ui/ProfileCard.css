@@ -1,0 +1,216 @@
+:root {
+  --pc-blue: #71c4ff;
+  --pc-purple: #9d6cff;
+  --pc-pink: #ff6c9d;
+  --pc-green: #56f2a8;
+  --pc-red: #ff5252;
+  --pc-yellow: #f2e356;
+}
+
+.pc-card-wrapper {
+  position: relative;
+  width: 320px;
+  height: 480px;
+  perspective: 1200px;
+  transform-style: preserve-3d;
+  display: grid;
+  place-items: center;
+}
+
+.pc-card-shell {
+  width: 100%;
+  height: 100%;
+  border-radius: 24px;
+  transition: transform 0.18s ease-out;
+  transform: rotateX(var(--rotate-x, 0deg)) rotateY(var(--rotate-y, 0deg));
+  position: relative;
+}
+
+.pc-card-shell.active {
+  transition-duration: 0.1s;
+}
+.pc-card-shell.entering {
+  transition: transform 180ms ease-out;
+}
+
+.pc-card {
+  width: 100%;
+  height: 100%;
+  border-radius: 24px;
+  overflow: hidden;
+  background-color: #1a1a1a;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  transform: scale(1);
+  transition: transform 0.2s ease;
+}
+
+.pc-card-shell.active .pc-card {
+  transform: scale(0.97);
+}
+
+
+.pc-behind {
+  position: absolute;
+  inset: -15%;
+  background: var(--behind-glow-color, #7dbeffac);
+  filter: blur(45px);
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  transform: scale(var(--behind-glow-size, 0.5));
+}
+.pc-card-shell.active .pc-behind {
+  opacity: var(--pointer-from-center, 0);
+}
+
+.pc-inside {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  isolation: isolate;
+  background-image: var(--inner-gradient, linear-gradient(145deg, #60496e8c 0%, #71c4ff44 100%));
+}
+
+.pc-inside::before, .pc-inside::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.pc-inside::before {
+  background-image: var(--icon, none);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 80%;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+}
+
+.pc-inside::after {
+    background-image: var(--grain, none);
+    opacity: 0.1;
+    mix-blend-mode: soft-light;
+}
+
+
+.pc-shine {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--pointer-x, 50%) var(--pointer-y, 50%), rgba(255, 255, 255, 0.4), transparent 30%);
+  opacity: var(--pointer-from-center, 0);
+  transition: opacity 0.2s ease;
+  mix-blend-mode: screen;
+  z-index: 2;
+}
+
+.pc-glare {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    border-radius: inherit;
+    background: linear-gradient(155deg, rgba(255, 255, 255, 0) 45%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0) 55%);
+    background-size: 200% 200%;
+    background-position: var(--background-x, 50%) var(--background-y, 50%);
+    mix-blend-mode: overlay;
+    opacity: 0.7;
+}
+
+
+.pc-content {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 24px;
+  color: white;
+}
+
+.pc-avatar-content {
+    justify-content: center;
+    align-items: center;
+}
+
+.avatar {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    border: 3px solid rgba(255,255,255,0.7);
+    object-fit: cover;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+}
+
+.pc-user-info {
+    position: absolute;
+    bottom: 24px;
+    left: 24px;
+    right: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0,0,0,0.3);
+    padding: 8px 12px;
+    border-radius: 12px;
+    backdrop-filter: blur(5px);
+}
+
+.pc-user-details {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.pc-mini-avatar img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255,255,255,0.5);
+}
+.pc-handle {
+    font-weight: 600;
+    font-size: 14px;
+}
+.pc-status {
+    font-size: 12px;
+    color: var(--pc-green);
+}
+.pc-contact-btn {
+    background: var(--pc-blue);
+    color: #111;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.pc-contact-btn:hover {
+    background: #fff;
+}
+
+.pc-details {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  right: 24px;
+  text-align: center;
+  z-index: 5;
+}
+
+.pc-details h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+
+.pc-details p {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.8);
+  margin-top: 4px;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
