@@ -42,18 +42,18 @@
 .eb-glow-1 {
   background: var(--electric-border-color);
   filter: blur(15px);
-  opacity: 0.6;
+  opacity: 0.7;
 }
 
 .eb-glow-2 {
   background: var(--electric-border-color);
   filter: blur(30px);
-  opacity: 0.4;
+  opacity: 0.5;
 }
 
 .eb-background-glow {
   background: var(--electric-border-color);
-  opacity: 0.08;
+  opacity: 0.12;
   filter: blur(50px);
 }
 

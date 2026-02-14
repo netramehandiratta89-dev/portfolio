@@ -7,7 +7,7 @@ const ElectricBorder = ({
   children,
   color = '#5227FF',
   speed = 1,
-  chaos = 0.12,
+  chaos = 0.18,
   borderRadius = 24,
   className,
   style
@@ -200,7 +200,7 @@ const ElectricBorder = ({
       ctx.scale(dpr, dpr);
 
       ctx.strokeStyle = color;
-      ctx.lineWidth = 1;
+      ctx.lineWidth = 1.5;
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
 
