@@ -5,15 +5,16 @@ import SkillsSection from '@/components/sections/skills';
 import ProjectsSection from '@/components/sections/projects';
 import CertificationsSection from '@/components/sections/certifications';
 import ContactSection from '@/components/sections/contact';
-import { getSettings } from './actions';
+import { getSettings, getEducation } from './actions';
 
 export default async function Home() {
   const settings = await getSettings();
+  const education = await getEducation();
   return (
     <div className="flex flex-col">
       <HeroSection />
       <AboutSection />
-      <EducationSection />
+      <EducationSection education={education} />
       <SkillsSection />
       <ProjectsSection />
       <CertificationsSection />
