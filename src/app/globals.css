@@ -70,4 +70,29 @@
   .glass-card {
     @apply bg-card/5 backdrop-blur-lg border border-primary/10 shadow-lg;
   }
+
+  .glow-btn {
+    padding: 14px 32px;
+    border-radius: 40px;
+    background: #0f172a;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    transition: 0.3s;
+  }
+
+  .glow-btn::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(90deg,#00f5ff,#7c3aed,#ff00aa,#00f5ff);
+    filter: blur(12px);
+    opacity: 0;
+    transition: 0.4s;
+    z-index: -1;
+  }
+
+  .glow-btn:hover::before {
+    opacity: 1;
+  }
 }
