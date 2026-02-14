@@ -1,66 +1,56 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, Code } from 'lucide-react';
 import { socialLinks } from '@/lib/data';
 import { cn } from '@/lib/utils';
+import PillNav from '@/components/ui/PillNav';
 
 const navLinks = [
   { href: '#about', label: 'About' },
   { href: '#skills', label: 'Skills' },
   { href: '#projects', label: 'Projects' },
+  { href: '#certifications', label: 'Certifications' },
   { href: '#contact', label: 'Contact' },
 ];
 
 export default function Header({ settings }: { settings: { [key: string]: string } }) {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
+  const [activeHref, setActiveHref] = useState('#home');
+  
+  const name = settings.name || 'Portfolio';
+  const logoText = name.split(' ')[0] || 'C';
+
+  const logoSvg = `<svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><style>.svg-text { font-family: "Space Grotesk", sans-serif; font-size: 24px; fill: white; font-weight: 700; } text { transform: translateY(2px); }</style><circle cx="24" cy="24" r="22" stroke="hsl(var(--primary))" stroke-width="2" fill="transparent"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" class="svg-text">${logoText.charAt(0)}</text></svg>`;
+  const logoDataUri = `data:image/svg+xml;base64,${Buffer.from(logoSvg).toString('base64')}`;
+
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
+      
+      const sections = navLinks.map(link => document.querySelector(link.href));
+      const homeSection = document.querySelector('#home');
+
+      let currentSection = '#home';
+
+      if (homeSection && window.scrollY < homeSection.clientHeight / 2) {
+        currentSection = '#home';
+      } else {
+        for (const section of sections) {
+          if (section && window.scrollY >= section.offsetTop - 100) {
+            currentSection = `#${section.id}`;
+          }
+        }
+      }
+      setActiveHref(currentSection);
     };
-    window.addEventListener('scroll', handleScroll);
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); 
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleLinkClick = () => {
-    setIsOpen(false);
-  };
-
-  const name = settings.name || 'Portfolio';
-
-  const NavMenu = ({ isMobile }: { isMobile?: boolean }) => (
-    <nav
-      className={cn(
-        'flex items-center gap-4',
-        isMobile ? 'flex-col items-start' : 'hidden md:flex'
-      )}
-    >
-      {navLinks.map((link) => (
-        <Link
-          key={link.href}
-          href={link.href}
-          onClick={handleLinkClick}
-          className="font-medium text-foreground/80 transition-colors hover:text-primary"
-        >
-          {link.label}
-        </Link>
-      ))}
-      <div className={cn("flex items-center gap-2", isMobile ? 'pt-4 flex-wrap' : 'pl-4')}>
-        {socialLinks.map((link) => (
-          <Button key={link.name} variant="ghost" size="icon" asChild>
-            <a href={link.url} target="_blank" rel="noopener noreferrer" aria-label={link.name}>
-              <link.icon className="h-5 w-5 text-foreground/80 hover:text-primary" />
-            </a>
-          </Button>
-        ))}
-      </div>
-    </nav>
-  );
 
   return (
     <header
@@ -70,27 +60,19 @@ export default function Header({ settings }: { settings: { [key: string]: string
       )}
     >
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
-        <Link href="/" className="flex items-center gap-2 font-headline text-2xl font-bold">
-          <Code className="h-7 w-7 text-primary" />
-          <span>{name.split(' ')[0]}</span>
-        </Link>
-
-        <NavMenu />
-
-        <div className="md:hidden">
-          <Sheet open={isOpen} onOpenChange={setIsOpen}>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <Menu className="h-6 w-6" />
-                <span className="sr-only">Open navigation menu</span>
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="right" className="w-[280px] bg-background/90 backdrop-blur-xl">
-              <div className="flex h-full flex-col p-6 pt-16">
-                <NavMenu isMobile />
-              </div>
-            </SheetContent>
-          </Sheet>
+        <PillNav
+            logo={logoDataUri}
+            logoAlt={`${name}'s Logo`}
+            items={navLinks}
+            activeHref={activeHref}
+        />
+        <div className="hidden md:flex items-center gap-1">
+          {socialLinks.map((link) => (
+            <a key={link.name} href={link.url} target="_blank" rel="noopener noreferrer" aria-label={link.name} 
+               className="h-10 w-10 inline-flex items-center justify-center rounded-full text-foreground/80 transition-colors hover:text-primary hover:bg-primary/10">
+              <link.icon className="h-5 w-5" />
+            </a>
+          ))}
         </div>
       </div>
     </header>
