@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { getSkills, getSettings } from '@/app/actions';
 import FuzzyText from '@/components/ui/fuzzy-text';
-import LetterGlitch from '@/components/ui/LetterGlitch';
+import DarkVeil from '@/components/ui/DarkVeil';
 
 export default async function HeroSection() {
   const skillsData = await getSkills();
@@ -20,8 +20,15 @@ export default async function HeroSection() {
   return (
     <section id="home" className="relative flex h-[calc(100vh-80px)] min-h-[600px] w-full items-center justify-center pt-20 sm:min-h-[700px]">
       <div className="absolute inset-0 z-0">
-        <LetterGlitch />
-        <div className="absolute inset-0 bg-background/50" />
+        <DarkVeil 
+          hueShift={180}
+          noiseIntensity={0.02}
+          scanlineIntensity={0.05}
+          speed={0.3}
+          scanlineFrequency={200}
+          warpAmount={0.5}
+        />
+        <div className="absolute inset-0 bg-background/70" />
       </div>
 
       <div className="container relative z-10 mx-auto flex flex-col items-center justify-center px-4 text-center md:px-6">
@@ -77,6 +84,3 @@ export default async function HeroSection() {
           )}
         </div>
       </div>
-    </section>
-  );
-}
