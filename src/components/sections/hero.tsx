@@ -84,3 +84,6 @@ export default async function HeroSection() {
           )}
         </div>
       </div>
+    </section>
+  );
+}
