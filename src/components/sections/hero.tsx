@@ -41,7 +41,7 @@ export default async function HeroSection() {
               fontSize="clamp(2.5rem, 10vw, 8rem)"
               fontWeight={700}
               fontFamily="Space Grotesk"
-              color="hsl(var(--foreground))"
+              color="#FFFFFF"
               baseIntensity={0.1}
               hoverIntensity={0.25}
               glitchMode={true}
