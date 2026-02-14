@@ -1,0 +1,227 @@
+
+:root {
+  --sm-accent: #5227ff;
+  --sm-text-light: #fefefe;
+  --sm-text-dark: #121212;
+}
+
+.staggered-menu-wrapper {
+  position: relative;
+  width: 100%;
+  z-index: 100;
+}
+.staggered-menu-wrapper.fixed-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.staggered-menu-header {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  z-index: 102;
+  width: 100%;
+  height: 80px; /* Match old header height */
+}
+
+.staggered-menu-wrapper[data-position='left'] .staggered-menu-header {
+  flex-direction: row-reverse;
+}
+
+.sm-logo {
+  height: 48px; /* Match old logo height */
+  width: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sm-logo-img {
+  height: 100%;
+  width: auto;
+}
+
+.sm-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  color: #fff;
+}
+
+.sm-toggle-textWrap {
+  display: block;
+  overflow: hidden;
+  height: 1.2em;
+  font-size: 1rem;
+  font-weight: 500;
+}
+.sm-toggle-textInner {
+  display: flex;
+  flex-direction: column;
+}
+.sm-toggle-line {
+  display: block;
+  height: 1.2em;
+}
+
+.sm-icon {
+  position: relative;
+  width: 16px;
+  height: 16px;
+}
+.sm-icon-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: currentColor;
+  transform-origin: 50% 50%;
+  margin-top: -1px;
+}
+
+.sm-prelayers {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  z-index: 99;
+  pointer-events: none;
+}
+.staggered-menu-wrapper[data-position='left'] .sm-prelayers {
+  left: auto;
+  right: 0;
+  transform: scaleX(-1);
+}
+.sm-prelayer {
+  position: absolute;
+  inset: 0;
+}
+
+.staggered-menu-panel {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: clamp(300px, 40vw, 500px);
+  background: var(--sm-text-dark);
+  z-index: 101;
+  color: var(--sm-text-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.staggered-menu-wrapper[data-position='left'] .staggered-menu-panel {
+  left: 0;
+}
+.staggered-menu-wrapper[data-position='right'] .staggered-menu-panel {
+  right: 0;
+}
+
+.sm-panel-inner {
+  padding: 2rem 3rem;
+  width: 100%;
+}
+
+.sm-panel-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.sm-panel-itemWrap {
+  overflow: hidden;
+  margin: 0.5rem 0;
+}
+
+.sm-panel-list[data-numbering] .sm-panel-item::before {
+  --sm-num-opacity: 0;
+  content: '0' counter(item);
+  counter-increment: item;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.8em;
+  color: var(--sm-accent);
+  opacity: var(--sm-num-opacity);
+}
+
+.sm-panel-item {
+  display: block;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 600;
+  color: var(--sm-text-light);
+  text-decoration: none;
+  position: relative;
+  padding-left: 0;
+  transition: color 0.3s;
+}
+
+.sm-panel-list[data-numbering] .sm-panel-item {
+  padding-left: 2.5rem;
+}
+
+.sm-panel-item:hover .sm-panel-itemLabel {
+  color: var(--sm-accent);
+  transform: translateX(10px);
+}
+
+.sm-panel-itemLabel {
+  display: inline-block;
+  transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), color 0.3s;
+}
+
+.sm-socials {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sm-socials-title {
+  font-size: 1rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.sm-socials-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.sm-socials-link {
+  color: var(--sm-text-light);
+  text-decoration: none;
+  font-weight: 500;
+  position: relative;
+}
+
+.sm-socials-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--sm-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.sm-socials-link:hover::after {
+  transform: scaleX(1);
+}
