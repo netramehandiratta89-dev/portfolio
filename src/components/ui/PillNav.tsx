@@ -18,6 +18,19 @@ const PillNav = ({
   pillTextColor,
   onMobileMenuClick,
   initialLoadAnimation = true
+}: {
+  logo?: string,
+  logoAlt?: string,
+  items?: { href: string, label: string, ariaLabel?: string }[],
+  activeHref?: string,
+  className?: string,
+  ease?: string,
+  baseColor?: string,
+  pillColor?: string,
+  hoveredPillTextColor?: string,
+  pillTextColor?: string,
+  onMobileMenuClick?: () => void,
+  initialLoadAnimation?: boolean
 }) => {
   const resolvedPillTextColor = pillTextColor ?? baseColor;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -25,7 +38,7 @@ const PillNav = ({
   const tlRefs = useRef<(gsap.core.Timeline | null)[]>([]);
   const activeTweenRefs = useRef<(gsap.core.Tween | null)[]>([]);
   const logoImgRef = useRef<HTMLImageElement>(null);
-  const logoTweenRef = useRef<gsap.core.Tween>(null);
+  const logoTweenRef = useRef<gsap.core.Tween | null>(null);
   const hamburgerRef = useRef<HTMLButtonElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const navItemsRef = useRef<HTMLDivElement>(null);
@@ -197,14 +210,6 @@ const PillNav = ({
 
     onMobileMenuClick?.();
   };
-
-  const isExternalLink = (href: string) =>
-    href.startsWith('http://') ||
-    href.startsWith('https://') ||
-    href.startsWith('//') ||
-    href.startsWith('mailto:') ||
-    href.startsWith('tel:') ||
-    href.startsWith('#');
 
   const cssVars: React.CSSProperties = {
     '--base': baseColor,
