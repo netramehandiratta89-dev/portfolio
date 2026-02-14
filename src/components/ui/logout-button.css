@@ -1,0 +1,126 @@
+.logout-button-animated {
+  --duration: 400ms;
+  position: relative;
+  padding: 10px 20px 10px 25px;
+  border-radius: 8px;
+  border: none;
+  background: #1f2335;
+  color: #f4f7ff;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: background-color 0.3s;
+}
+
+.logout-button-animated:hover:not(.logging-out) {
+    background: #313852;
+}
+
+.logout-button-animated .text {
+  transition: transform var(--duration) ease;
+}
+
+.logout-button-animated .icon {
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+
+.logout-button-animated .icon svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  fill: #f4f7ff;
+  transition: transform var(--duration) ease, opacity var(--duration) ease;
+}
+
+.logout-button-animated .doorway {
+  z-index: 1;
+}
+
+.logout-button-animated .door {
+  z-index: 2;
+  transform-origin: right;
+}
+
+.logout-button-animated .person {
+  z-index: 3;
+  opacity: 0;
+  transform: translateX(10px);
+}
+
+/* Hover state */
+.logout-button-animated:hover:not(.logging-out) .text {
+  transform: translateX(-5px);
+}
+.logout-button-animated:hover:not(.logging-out) .door {
+  transform: rotateY(-35deg);
+}
+.logout-button-animated:hover:not(.logging-out) .person {
+  opacity: 1;
+  transform: translateX(-20px);
+}
+.logout-button-animated:hover:not(.logging-out) .doorway {
+  transform: translateX(-2px);
+}
+
+/* Click state */
+.logout-button-animated.logging-out .text {
+  animation: text-out var(--duration) forwards;
+}
+
+@keyframes text-out {
+  to {
+    transform: translate(100px, -50px);
+    opacity: 0;
+  }
+}
+
+.logout-button-animated.logging-out .person {
+  animation: person-out 1s forwards ease-in-out;
+}
+
+@keyframes person-out {
+  0% {
+    transform: translateX(-20px);
+    opacity: 1;
+  }
+  40% {
+    transform: translateX(-50px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-50px) translateY(30px) scale(0.8);
+    opacity: 0;
+  }
+}
+
+.logout-button-animated.logging-out .door {
+  animation: door-shut 1.2s forwards ease-in-out;
+}
+
+@keyframes door-shut {
+  0% { transform: rotateY(-35deg); }
+  40% { transform: rotateY(0deg); }
+  60% { transform: rotateY(5deg); }
+  100% { transform: rotateY(0deg); }
+}
+
+.logout-button-animated.logging-out .doorway,
+.logout-button-animated.logging-out .door,
+.logout-button-animated.logging-out .icon {
+    animation: icon-fall 2s forwards ease-in;
+    animation-delay: 0.8s;
+}
+
+@keyframes icon-fall {
+    to {
+        transform: translateY(100px) rotate(180deg);
+        opacity: 0;
+    }
+}

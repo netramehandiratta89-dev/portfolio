@@ -30,6 +30,9 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { LogoutButton } from '@/components/ui/logout-button';
+import '@/components/ui/logout-button.css';
+
 
 // Data Types
 type Message = { id: number; created_at: string; name: string; email: string; message: string; };
@@ -245,10 +248,13 @@ export default function AdminPage() {
 
   return (
     <div className="min-h-screen bg-muted/40 p-4 md:p-8">
-      <div className="max-w-7xl mx-auto grid gap-8">
-        <header>
-          <h1 className="font-headline text-2xl font-bold md:text-3xl">Admin Panel</h1>
-          <p className="text-foreground/80">Manage your portfolio content.</p>
+      <div className="mx-auto max-w-7xl grid gap-8">
+        <header className="flex items-start justify-between">
+          <div>
+            <h1 className="font-headline text-2xl font-bold md:text-3xl">Admin Panel</h1>
+            <p className="text-foreground/80">Manage your portfolio content.</p>
+          </div>
+          <LogoutButton />
         </header>
 
         {/* Site Settings Card */}
@@ -291,9 +297,9 @@ export default function AdminPage() {
             <Button onClick={() => handleOpenProjectDialog(null)}><Plus className="mr-2 h-4 w-4" /> Add Project</Button>
           </CardHeader>
           <CardContent><ScrollArea className="h-[30vh]"><Table>
-            <TableHeader><TableRow><TableHead>Title</TableHead><TableHead>Description</TableHead><TableHead className="text-right">Actions</TableHead></TableRow></TableHeader>
+            <TableHeader><TableRow><TableHead>Title</TableHead><TableHead className="hidden md:table-cell">Description</TableHead><TableHead className="text-right">Actions</TableHead></TableRow></TableHeader>
             <TableBody>{projects.length > 0 ? projects.map((p) => (
-              <TableRow key={p.id}><TableCell className="font-medium">{p.title}</TableCell><TableCell className="max-w-sm truncate">{p.description}</TableCell><TableCell className="text-right">
+              <TableRow key={p.id}><TableCell className="font-medium">{p.title}</TableCell><TableCell className="hidden max-w-sm truncate md:table-cell">{p.description}</TableCell><TableCell className="text-right">
                 <Button variant="ghost" size="icon" onClick={() => handleOpenProjectDialog(p)}><Edit className="h-4 w-4" /></Button>
                 <AlertDialog><AlertDialogTrigger asChild><Button variant="ghost" size="icon"><Trash2 className="h-4 w-4 text-destructive" /></Button></AlertDialogTrigger>
                   <AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Are you sure?</AlertDialogTitle><AlertDialogDescription>This will permanently delete the project.</AlertDialogDescription></AlertDialogHeader>
@@ -315,9 +321,9 @@ export default function AdminPage() {
             <Button onClick={() => handleOpenCertDialog(null)}><Plus className="mr-2 h-4 w-4" /> Add Certification</Button>
           </CardHeader>
           <CardContent><ScrollArea className="h-[30vh]"><Table>
-            <TableHeader><TableRow><TableHead>Title</TableHead><TableHead>Issuer</TableHead><TableHead className="text-right">Actions</TableHead></TableRow></TableHeader>
+            <TableHeader><TableRow><TableHead>Title</TableHead><TableHead className="hidden md:table-cell">Issuer</TableHead><TableHead className="text-right">Actions</TableHead></TableRow></TableHeader>
             <TableBody>{certifications.length > 0 ? certifications.map((c) => (
-              <TableRow key={c.id}><TableCell className="font-medium">{c.title}</TableCell><TableCell>{c.issuer}</TableCell><TableCell className="text-right">
+              <TableRow key={c.id}><TableCell className="font-medium">{c.title}</TableCell><TableCell className="hidden md:table-cell">{c.issuer}</TableCell><TableCell className="text-right">
                 <Button variant="ghost" size="icon" onClick={() => handleOpenCertDialog(c)}><Edit className="h-4 w-4" /></Button>
                 <AlertDialog><AlertDialogTrigger asChild><Button variant="ghost" size="icon"><Trash2 className="h-4 w-4 text-destructive" /></Button></AlertDialogTrigger>
                   <AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Are you sure?</AlertDialogTitle><AlertDialogDescription>This will permanently delete this certification.</AlertDialogDescription></AlertDialogHeader>
@@ -344,9 +350,9 @@ export default function AdminPage() {
               <TabsContent value="categories">
                 <div className="flex justify-end mb-4"><Button onClick={() => handleOpenSkillCatDialog(null)}><Plus className="mr-2 h-4 w-4" /> Add Category</Button></div>
                 <ScrollArea className="h-[30vh]"><Table>
-                  <TableHeader><TableRow><TableHead>Title</TableHead><TableHead>Icon</TableHead><TableHead className="text-right">Actions</TableHead></TableRow></TableHeader>
+                  <TableHeader><TableRow><TableHead>Title</TableHead><TableHead className="hidden md:table-cell">Icon</TableHead><TableHead className="text-right">Actions</TableHead></TableRow></TableHeader>
                   <TableBody>{skillCategories.map(cat => (
-                    <TableRow key={cat.id}><TableCell>{cat.title}</TableCell><TableCell>{cat.icon}</TableCell><TableCell className="text-right">
+                    <TableRow key={cat.id}><TableCell>{cat.title}</TableCell><TableCell className="hidden md:table-cell">{cat.icon}</TableCell><TableCell className="text-right">
                       <Button variant="ghost" size="icon" onClick={() => handleOpenSkillCatDialog(cat)}><Edit className="h-4 w-4" /></Button>
                       <AlertDialog><AlertDialogTrigger asChild><Button variant="ghost" size="icon"><Trash2 className="h-4 w-4 text-destructive" /></Button></AlertDialogTrigger>
                         <AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Are you sure?</AlertDialogTitle><AlertDialogDescription>Deleting a category will also delete all skills within it.</AlertDialogDescription></AlertDialogHeader>
@@ -360,11 +366,11 @@ export default function AdminPage() {
               <TabsContent value="skills">
                 <div className="flex justify-end mb-4"><Button onClick={() => handleOpenSkillDialog(null)} disabled={skillCategories.length === 0}><Plus className="mr-2 h-4 w-4" /> Add Skill</Button></div>
                  <ScrollArea className="h-[30vh]"><Table>
-                  <TableHeader><TableRow><TableHead>Name</TableHead><TableHead>Level</TableHead><TableHead>Category</TableHead><TableHead className="text-right">Actions</TableHead></TableRow></TableHeader>
+                  <TableHeader><TableRow><TableHead>Name</TableHead><TableHead>Level</TableHead><TableHead className="hidden md:table-cell">Category</TableHead><TableHead className="text-right">Actions</TableHead></TableRow></TableHeader>
                   <TableBody>{skills.map(skill => {
                       const category = skillCategories.find(c => c.id === skill.category_id);
                       return (
-                        <TableRow key={skill.id}><TableCell>{skill.name}</TableCell><TableCell>{skill.level}%</TableCell><TableCell>{category?.title || 'N/A'}</TableCell><TableCell className="text-right">
+                        <TableRow key={skill.id}><TableCell>{skill.name}</TableCell><TableCell>{skill.level}%</TableCell><TableCell className="hidden md:table-cell">{category?.title || 'N/A'}</TableCell><TableCell className="text-right">
                           <Button variant="ghost" size="icon" onClick={() => handleOpenSkillDialog(skill)}><Edit className="h-4 w-4" /></Button>
                           <AlertDialog><AlertDialogTrigger asChild><Button variant="ghost" size="icon"><Trash2 className="h-4 w-4 text-destructive" /></Button></AlertDialogTrigger>
                             <AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Are you sure?</AlertDialogTitle><AlertDialogDescription>This will permanently delete this skill.</AlertDialogDescription></AlertDialogHeader>
@@ -386,7 +392,7 @@ export default function AdminPage() {
           <CardContent><ScrollArea className="h-[40vh]"><Table>
             <TableHeader><TableRow><TableHead>Received</TableHead><TableHead>From</TableHead><TableHead>Message</TableHead><TableHead className="text-right">Actions</TableHead></TableRow></TableHeader>
             <TableBody>{messages.length > 0 ? messages.map((msg) => (
-              <TableRow key={msg.id}><TableCell className="whitespace-nowrap">{new Date(msg.created_at).toLocaleString()}</TableCell><TableCell><div className="font-medium">{msg.name}</div><div className="text-sm text-foreground/70">{msg.email}</div></TableCell><TableCell><p className="max-w-md truncate">{msg.message}</p></TableCell><TableCell className="text-right">
+              <TableRow key={msg.id}><TableCell className="whitespace-nowrap">{new Date(msg.created_at).toLocaleString()}</TableCell><TableCell><div className="font-medium">{msg.name}</div><div className="text-sm text-foreground/70">{msg.email}</div></TableCell><TableCell><p className="max-w-xs md:max-w-md truncate">{msg.message}</p></TableCell><TableCell className="text-right">
                 <AlertDialog><AlertDialogTrigger asChild><Button variant="ghost" size="icon"><Trash2 className="h-4 w-4 text-destructive" /></Button></AlertDialogTrigger>
                   <AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Are you sure?</AlertDialogTitle><AlertDialogDescription>This will permanently delete the message.</AlertDialogDescription></AlertDialogHeader>
                     <AlertDialogFooter><AlertDialogCancel>Cancel</AlertDialogCancel><AlertDialogAction onClick={() => handleDelete(msg.id, deleteMessage, 'Message')} className="bg-destructive hover:bg-destructive/90">Delete</AlertDialogAction></AlertDialogFooter>
