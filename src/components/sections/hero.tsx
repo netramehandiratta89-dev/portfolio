@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { getSkills, getSettings } from '@/app/actions';
 import FuzzyText from '@/components/ui/fuzzy-text';
+import LetterGlitch from '@/components/ui/LetterGlitch';
 
 export default async function HeroSection() {
   const skillsData = await getSkills();
@@ -19,9 +20,8 @@ export default async function HeroSection() {
   return (
     <section id="home" className="relative flex h-[calc(100vh-80px)] min-h-[600px] w-full items-center justify-center pt-20 sm:min-h-[700px]">
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-background" />
-        <div className="absolute inset-0 bg-grid-primary/5 [mask-image:linear-gradient(to_bottom,white_5%,transparent_90%)]"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_500px_at_50%_200px,#222,transparent)]" />
+        <LetterGlitch />
+        <div className="absolute inset-0 bg-background/50" />
       </div>
 
       <div className="container relative z-10 mx-auto flex flex-col items-center justify-center px-4 text-center md:px-6">
