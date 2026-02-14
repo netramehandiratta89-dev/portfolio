@@ -1,11 +1,8 @@
+
 'use server';
 
-import { supabase, isSupabaseConfigured } from '@/lib/supabase';
+import { supabase } from '@/lib/supabase';
 import { revalidatePath } from 'next/cache';
-
-export async function getSupabaseConfigStatus() {
-  return isSupabaseConfigured;
-}
 
 export async function getMessages() {
   if (!supabase) return [];

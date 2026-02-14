@@ -1,16 +1,20 @@
 'use client';
 import { useState } from 'react';
 import './logout-button.css';
+import { logout } from '@/app/actions';
+import { useRouter } from 'next/navigation';
 
 export const LogoutButton = () => {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const router = useRouter();
 
-  const handleClick = () => {
+  const handleClick = async () => {
     setIsLoggingOut(true);
+    await logout();
     setTimeout(() => {
-      console.log("Logout action here");
-      // In a real app, you might redirect or clear user session
       setIsLoggingOut(false);
+      router.push('/login');
+      router.refresh();
     }, 2000); // Animation duration
   };
 
