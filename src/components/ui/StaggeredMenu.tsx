@@ -183,20 +183,6 @@ export const StaggeredMenu = ({
     return tl;
   }, []);
 
-  const playOpen = useCallback(() => {
-    if (busyRef.current) return;
-    busyRef.current = true;
-    const tl = buildOpenTimeline();
-    if (tl) {
-      tl.eventCallback('onComplete', () => {
-        busyRef.current = false;
-      });
-      tl.play(0);
-    } else {
-      busyRef.current = false;
-    }
-  }, [buildOpenTimeline]);
-
   const closeMenu = useCallback(() => {
     if (openRef.current) {
       openRef.current = false;
@@ -314,6 +300,20 @@ export const StaggeredMenu = ({
     });
   }, []);
 
+  const playOpen = useCallback(() => {
+    if (busyRef.current) return;
+    busyRef.current = true;
+    const tl = buildOpenTimeline();
+    if (tl) {
+      tl.eventCallback('onComplete', () => {
+        busyRef.current = false;
+      });
+      tl.play(0);
+    } else {
+      busyRef.current = false;
+    }
+  }, [buildOpenTimeline]);
+
   const toggleMenu = useCallback(() => {
     const target = !openRef.current;
     openRef.current = target;
@@ -359,7 +359,7 @@ export const StaggeredMenu = ({
     >
       <div ref={preLayersRef} className="sm-prelayers" aria-hidden="true">
         {(() => {
-          const raw = colors && colors.length ? colors.slice(0, 4) : ['#1e1e22', '#35353c'];
+          const raw = Array.isArray(colors) && colors.length ? colors.slice(0, 4) : ['#1e1e22', '#35353c'];
           let arr = [...raw];
           if (arr.length >= 3) {
             const mid = Math.floor(arr.length / 2);
