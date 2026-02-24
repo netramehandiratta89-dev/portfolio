@@ -204,20 +204,27 @@ const ProjectCard = ({ project }: { project: any }) => {
   const cardStyle = {
     '--inner-gradient': 'linear-gradient(145deg, hsl(var(--primary) / 0.1) 0%, hsl(var(--accent) / 0.1) 100%)',
     '--behind-glow-color': 'hsl(var(--primary) / 0.6)',
-  };
+  } as React.CSSProperties;
 
   return (
      <div ref={wrapRef} className="pc-card-wrapper h-full" style={cardStyle}>
       <div className="pc-behind" />
-        <div ref={shellRef} className="pc-card-shell h-full">
-            <div className="pc-card h-full">
-               <div className="pc-inside">
-                  {/* Decorative overlays with pointer-events: none in CSS */}
-                  <div className="pc-shine" />
-                  <div className="pc-glare" />
+        <div ref={shellRef} className="pc-card-shell h-full" style={{ transformStyle: 'preserve-3d' }}>
+            <div className="pc-card h-full" style={{ transformStyle: 'preserve-3d' }}>
+               <div className="pc-inside" style={{ transformStyle: 'preserve-3d' }}>
+                  {/* Decorative overlays - pointer-events: none ensures they don't block clicks */}
+                  <div className="pc-shine" style={{ pointerEvents: 'none' }} />
+                  <div className="pc-glare" style={{ pointerEvents: 'none' }} />
                   
-                  {/* High z-index content wrapper to ensure clickability */}
-                  <div className="relative z-10 flex flex-col h-full">
+                  {/* High z-index content wrapper lifted with translateZ to be physically on top */}
+                  <div 
+                    className="relative z-10 flex flex-col h-full" 
+                    style={{ 
+                      transform: 'translateZ(30px)', 
+                      transformStyle: 'preserve-3d',
+                      pointerEvents: 'auto'
+                    }}
+                  >
                     <Card className="glass-card group flex flex-col overflow-hidden h-full bg-transparent border-0 shadow-none">
                       {project.imageUrl && (
                         <div className="relative aspect-video overflow-hidden">
@@ -230,27 +237,36 @@ const ProjectCard = ({ project }: { project: any }) => {
                           />
                         </div>
                       )}
-                      <CardHeader>
-                        <CardTitle className="font-headline text-xl text-white text-left">{project.title}</CardTitle>
-                        <CardDescription className="text-white/70 pt-2 break-words text-left">{project.description}</CardDescription>
+                      <CardHeader className="text-left">
+                        <CardTitle className="font-headline text-xl text-white">{project.title}</CardTitle>
+                        <CardDescription className="text-white/70 pt-2 break-words">{project.description}</CardDescription>
                       </CardHeader>
-                      <CardContent className="flex-grow">
+                      <CardContent className="flex-grow text-left">
                         <div className="flex flex-wrap gap-2">
                           {project.techStack.map((tech: string) => (
                             <Badge key={tech} variant="secondary" className='text-white/80 bg-white/10 border-white/20'>{tech}</Badge>
                           ))}
                         </div>
                       </CardContent>
-                      <CardFooter className="flex justify-end gap-2 bg-black/10 p-4">
+                      <CardFooter className="flex justify-end gap-2 bg-black/10 p-4" style={{ pointerEvents: 'auto' }}>
                         {project.githubUrl && (
-                          <Button variant="outline" size="sm" asChild className="relative z-20">
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            asChild 
+                            className="relative z-30 cursor-pointer pointer-events-auto transition-transform hover:scale-105 active:scale-95"
+                          >
                             <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
                               <Github className="mr-2 h-4 w-4" /> GitHub
                             </a>
                           </Button>
                         )}
                         {project.liveDemoUrl && (
-                          <Button size="sm" asChild className="relative z-20">
+                          <Button 
+                            size="sm" 
+                            asChild 
+                            className="relative z-30 cursor-pointer pointer-events-auto transition-transform hover:scale-105 active:scale-95"
+                          >
                             <a href={project.liveDemoUrl} target="_blank" rel="noopener noreferrer">
                               <ExternalLink className="mr-2 h-4 w-4" /> Live Demo
                             </a>
