@@ -101,6 +101,7 @@
   transition: opacity 0.2s ease;
   mix-blend-mode: screen;
   z-index: 2;
+  pointer-events: none;
 }
 
 .pc-glare {
@@ -113,6 +114,7 @@
     background-position: var(--background-x, 50%) var(--background-y, 50%);
     mix-blend-mode: overlay;
     opacity: 0.7;
+    pointer-events: none;
 }
 
 
