@@ -212,48 +212,53 @@ const ProjectCard = ({ project }: { project: any }) => {
         <div ref={shellRef} className="pc-card-shell h-full">
             <div className="pc-card h-full">
                <div className="pc-inside">
+                  {/* Decorative overlays with pointer-events: none in CSS */}
                   <div className="pc-shine" />
                   <div className="pc-glare" />
-                  <Card className="glass-card group flex flex-col overflow-hidden h-full bg-transparent border-0 shadow-none">
-                    {project.imageUrl && (
-                      <div className="relative aspect-video overflow-hidden">
-                        <Image
-                          src={project.imageUrl}
-                          alt={project.title}
-                          fill
-                          className="object-contain p-4 transition-transform duration-300 group-hover:scale-105"
-                          data-ai-hint={project.imageHint || ''}
-                        />
-                      </div>
-                    )}
-                    <CardHeader>
-                      <CardTitle className="font-headline text-xl text-white text-left">{project.title}</CardTitle>
-                      <CardDescription className="text-white/70 pt-2 break-words text-left">{project.description}</CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex-grow">
-                      <div className="flex flex-wrap gap-2">
-                        {project.techStack.map((tech: string) => (
-                          <Badge key={tech} variant="secondary" className='text-white/80 bg-white/10 border-white/20'>{tech}</Badge>
-                        ))}
-                      </div>
-                    </CardContent>
-                    <CardFooter className="flex justify-end gap-2 bg-black/10 p-4">
-                      {project.githubUrl && (
-                        <Button variant="outline" size="sm" asChild>
-                          <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
-                            <Github className="mr-2 h-4 w-4" /> GitHub
-                          </a>
-                        </Button>
+                  
+                  {/* High z-index content wrapper to ensure clickability */}
+                  <div className="relative z-10 flex flex-col h-full">
+                    <Card className="glass-card group flex flex-col overflow-hidden h-full bg-transparent border-0 shadow-none">
+                      {project.imageUrl && (
+                        <div className="relative aspect-video overflow-hidden">
+                          <Image
+                            src={project.imageUrl}
+                            alt={project.title}
+                            fill
+                            className="object-contain p-4 transition-transform duration-300 group-hover:scale-105"
+                            data-ai-hint={project.imageHint || ''}
+                          />
+                        </div>
                       )}
-                      {project.liveDemoUrl && (
-                        <Button size="sm" asChild>
-                          <a href={project.liveDemoUrl} target="_blank" rel="noopener noreferrer">
-                            <ExternalLink className="mr-2 h-4 w-4" /> Live Demo
-                          </a>
-                        </Button>
-                      )}
-                    </CardFooter>
-                  </Card>
+                      <CardHeader>
+                        <CardTitle className="font-headline text-xl text-white text-left">{project.title}</CardTitle>
+                        <CardDescription className="text-white/70 pt-2 break-words text-left">{project.description}</CardDescription>
+                      </CardHeader>
+                      <CardContent className="flex-grow">
+                        <div className="flex flex-wrap gap-2">
+                          {project.techStack.map((tech: string) => (
+                            <Badge key={tech} variant="secondary" className='text-white/80 bg-white/10 border-white/20'>{tech}</Badge>
+                          ))}
+                        </div>
+                      </CardContent>
+                      <CardFooter className="flex justify-end gap-2 bg-black/10 p-4">
+                        {project.githubUrl && (
+                          <Button variant="outline" size="sm" asChild className="relative z-20">
+                            <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
+                              <Github className="mr-2 h-4 w-4" /> GitHub
+                            </a>
+                          </Button>
+                        )}
+                        {project.liveDemoUrl && (
+                          <Button size="sm" asChild className="relative z-20">
+                            <a href={project.liveDemoUrl} target="_blank" rel="noopener noreferrer">
+                              <ExternalLink className="mr-2 h-4 w-4" /> Live Demo
+                            </a>
+                          </Button>
+                        )}
+                      </CardFooter>
+                    </Card>
+                  </div>
                 </div>
             </div>
         </div>
