@@ -99,11 +99,21 @@ export default {
           '0%': { transform: 'translateY(-50%)' },
           '100%': { transform: 'translateY(0)' },
         },
+        'pulse-slow': {
+          '0%, 100%': { opacity: '0.1' },
+          '50%': { opacity: '0.3' },
+        },
+        'spin-slow': {
+          from: { transform: 'rotate(0deg)' },
+          to: { transform: 'rotate(360deg)' },
+        }
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'grid': 'grid 15s linear infinite',
+        'pulse-slow': 'pulse-slow 6s ease-in-out infinite',
+        'spin-slow': 'spin-slow 15s linear infinite',
       },
     },
   },
