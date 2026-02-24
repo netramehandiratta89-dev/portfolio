@@ -1,11 +1,10 @@
+
 import { Button } from '@/components/ui/button';
 import { Download, Send } from 'lucide-react';
 import AnimatedTyping from '@/components/ui/animated-typing';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { getSkills, getSettings } from '@/app/actions';
-import FuzzyText from '@/components/ui/fuzzy-text';
-import DarkVeil from '@/components/ui/DarkVeil';
 
 export default async function HeroSection() {
   const skillsData = await getSkills();
@@ -18,72 +17,64 @@ export default async function HeroSection() {
   const resumeUrl = settings.resume_url || '';
 
   return (
-    <section id="home" className="relative flex h-[calc(100vh-80px)] min-h-[600px] w-full items-center justify-center pt-20 sm:min-h-[700px]">
+    <section id="home" className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-[#0a0a0a] pt-20">
+      {/* Professional Background Elements */}
       <div className="absolute inset-0 z-0">
-        <DarkVeil 
-          hueShift={180}
-          noiseIntensity={0.02}
-          scanlineIntensity={0.05}
-          speed={0.3}
-          scanlineFrequency={200}
-          warpAmount={0.5}
-        />
-        <div className="absolute inset-0 bg-background/70" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(37,99,235,0.08),transparent_70%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
       </div>
 
       <div className="container relative z-10 mx-auto flex flex-col items-center justify-center px-4 text-center md:px-6">
         {profileImage && (
-          <Image
-            src={profileImage.imageUrl}
-            alt={name}
-            width={200}
-            height={200}
-            priority
-            className="mb-6 h-36 w-36 rounded-lg object-cover shadow-lg sm:h-48 sm:w-48"
-            data-ai-hint={profileImage.imageHint}
-          />
+          <div className="relative mb-10 h-32 w-32 sm:h-40 sm:w-40 animate__animated animate__fadeIn">
+            <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-primary to-accent opacity-30 blur-lg"></div>
+            <Image
+              src={profileImage.imageUrl}
+              alt={name}
+              width={160}
+              height={160}
+              priority
+              className="relative h-full w-full rounded-full border border-white/10 object-cover shadow-2xl"
+              data-ai-hint={profileImage.imageHint}
+            />
+          </div>
         )}
-        <div className="h-24 sm:h-32 md:h-40 lg:h-48 flex items-center justify-center">
-            <FuzzyText
-              fontSize="clamp(2.5rem, 10vw, 8rem)"
-              fontWeight={700}
-              fontFamily="Space Grotesk"
-              color="#FFFFFF"
-              baseIntensity={0.1}
-              hoverIntensity={0.25}
-              glitchMode={true}
-              glitchInterval={3000}
-              glitchDuration={300}
-              clickEffect={true}
-              letterSpacing={-5}
-            >
-              {name}
-            </FuzzyText>
+        
+        <div className="max-w-4xl space-y-6">
+          <h1 className="font-headline text-5xl font-bold tracking-tight text-white sm:text-7xl md:text-8xl lg:text-9xl animate__animated animate__fadeInUp">
+            {name}
+          </h1>
+          
+          <div className="space-y-2 animate__animated animate__fadeInUp animate__delay-1s">
+            <p className="text-lg font-medium tracking-wide text-foreground/80 md:text-xl lg:text-2xl">
+              {tagline}
+            </p>
+            <div className="h-8 text-lg font-semibold text-primary md:text-xl">
+              <AnimatedTyping strings={skills} />
+            </div>
+          </div>
         </div>
 
-        <p className="mt-4 max-w-[700px] text-lg text-foreground/80 md:text-xl">
-          {tagline}
-        </p>
-        <div className="mt-2 h-8 text-lg text-primary md:text-xl">
-          <AnimatedTyping strings={skills} />
-        </div>
-        <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
-          <Button asChild variant="outline" size="lg" className="border-primary/50 text-primary hover:bg-primary/10 hover:text-primary">
+        <div className="mt-12 flex flex-col justify-center gap-4 sm:flex-row animate__animated animate__fadeInUp animate__delay-2s">
+          <Button asChild size="lg" className="glow-btn h-12 px-8">
             <a href="#contact">
-              <Send className="mr-2 h-5 w-5" />
-              Contact Me
+              <Send className="mr-2 h-4 w-4" />
+              Get in Touch
             </a>
           </Button>
           {resumeUrl && (
-            <Button asChild size="lg" className="glow-btn">
+            <Button asChild variant="outline" size="lg" className="h-12 border-white/10 px-8 hover:bg-white/5">
               <a href={resumeUrl} target="_blank" rel="noopener noreferrer">
-                <Download className="mr-2 h-5 w-5" />
-                Download Resume
+                <Download className="mr-2 h-4 w-4" />
+                View Resume
               </a>
             </Button>
           )}
         </div>
       </div>
+
+      {/* Subtle decorative bottom gradient */}
+      <div className="absolute bottom-0 h-32 w-full bg-gradient-to-t from-[#0a0a0a] to-transparent" />
     </section>
   );
 }
